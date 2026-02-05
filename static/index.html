@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Xgodo Proxy UI</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 18px; }
+    h2 { margin: 0 0 10px; }
+    .muted { color:#666; font-size:12px; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; margin: 12px 0; }
+    .tab { border:1px solid #ddd; background:#fff; padding:10px 12px; border-radius:999px; cursor:pointer; }
+    .tab.active { border-color:#333; }
+    .card { border:1px solid #ddd; border-radius:12px; padding:14px; margin-top:12px; }
+    label { display:block; margin: 10px 0 6px; font-size: 13px; color:#333; }
+    input, textarea, button { padding: 10px; font-size: 14px; width: 100%; box-sizing: border-box; }
+    textarea { min-height: 90px; resize: vertical; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; }
+    button { cursor:pointer; }
+    pre { background:#0b1020; color:#e6edf3; padding:12px; border-radius:12px; overflow:auto; }
+    .ok { color:#0a7; font-weight:600; }
+    .err { color:#c22; font-weight:600; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width: 720px){ .grid2{ grid-template-columns: 1fr; } }
+    .hint { font-size:12px; color:#666; margin-top: 6px; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <h2>Xgodo Proxy UI</h2>
+  <div class="muted">
+    এই UI আপনার Railway সার্ভারে চলবে, তাই ব্রাউজার থেকে request করলে CORS হবে না।<br/>
+    API secret/token server-side (ENV) এ থাকবে—এখানে দিতে হবে না।
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="submit">Submit</button>
+    <button class="tab" data-tab="tasks">Tasks / Details</button>
+    <button class="tab" data-tab="apply">Apply</button>
+  </div>
+
+  <div id="panel-submit" class="panel">
+    <div class="card">
+      <h3>Submit Task</h3>
+      <div class="muted">Endpoint: <code>GET /submit</code> → upstream <code>POST /api/v2/tasks/submit</code></div>
+
+      <label>Job ID (required)</label>
+      <input id="submit-job-id" placeholder="e.g. 68868530c189957861cd698a" />
+
+      <label>Job Proof (required)</label>
+      <input id="submit-job-proof" placeholder="Proof text / link / email info..." />
+
+      <div class="row" style="margin-top:12px;">
+        <div style="flex:1; min-width:220px;"><button id="btn-submit">Submit</button></div>
+        <div style="flex:1; min-width:220px;"><button id="btn-clear-submit" type="button">Clear</button></div>
+      </div>
+
+      <div id="submit-status" class="muted" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>Response</h3>
+      <pre id="submit-out">{}</pre>
+    </div>
+  </div>
+
+  <div id="panel-tasks" class="panel" style="display:none;">
+    <div class="card">
+      <h3>Tasks / Details</h3>
+      <div class="muted">Endpoint: <code>GET /tasks</code> → upstream <code>POST /api/v2/tasks/details</code></div>
+
+      <div class="grid2">
+        <div>
+          <label>Job ID (optional)</label>
+          <input id="tasks-job-id" placeholder="job_id দিলে ওই job-এর tasks filter হবে" />
+          <div class="hint">শুধু job_id দিলেও কাজ করবে।</div>
+        </div>
+        <div>
+          <label>Task ID (optional)</label>
+          <input id="tasks-task-id" placeholder="task_id দিলে single task details" />
+          <div class="hint">task_id দিলে job_id/page/limit ignore হবে।</div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>Page</label>
+          <input id="tasks-page" type="number" value="1" min="1" />
+        </div>
+        <div>
+          <label>Limit</label>
+          <input id="tasks-limit" type="number" value="10" min="1" max="100" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:12px;">
+        <div style="flex:1; min-width:220px;"><button id="btn-tasks">Fetch</button></div>
+        <div style="flex:1; min-width:220px;"><button id="btn-clear-tasks" type="button">Clear</button></div>
+      </div>
+
+      <div id="tasks-status" class="muted" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>Response</h3>
+      <pre id="tasks-out">{}</pre>
+    </div>
+  </div>
+
+  <div id="panel-apply" class="panel" style="display:none;">
+    <div class="card">
+      <h3>Apply Task</h3>
+      <div class="muted">Endpoint: <code>GET /apply</code> → upstream <code>GET /api/v2/tasks/apply</code></div>
+
+      <label>Job ID (required)</label>
+      <input id="apply-job-id" placeholder="e.g. 68868530c189957861cd698a" />
+
+      <div class="row" style="margin-top:12px;">
+        <div style="flex:1; min-width:220px;"><button id="btn-apply">Apply</button></div>
+        <div style="flex:1; min-width:220px;"><button id="btn-clear-apply" type="button">Clear</button></div>
+      </div>
+
+      <div id="apply-status" class="muted" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>Response</h3>
+      <pre id="apply-out">{}</pre>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function setStatus(id, msg, type="muted"){
+      const el = $(id);
+      el.className = type;
+      el.textContent = msg;
+    }
+
+    function pretty(elId, obj){
+      $(elId).textContent = JSON.stringify(obj, null, 2);
+    }
+
+    function qs(params){
+      const u = new URLSearchParams();
+      for (const [k,v] of Object.entries(params)){
+        if (v === undefined || v === null) continue;
+        const s = String(v).trim();
+        if (!s) continue;
+        u.set(k, s);
+      }
+      return u.toString();
+    }
+
+    async function callJson(url){
+      const res = await fetch(url, { method: "GET" });
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch { data = { _raw: text }; }
+      if (!res.ok) {
+        throw { status: res.status, data };
+      }
+      return data;
+    }
+
+    // Tabs
+    const tabs = document.querySelectorAll(".tab");
+    const panels = {
+      submit: $("panel-submit"),
+      tasks: $("panel-tasks"),
+      apply: $("panel-apply"),
+    };
+
+    tabs.forEach(t => t.addEventListener("click", () => {
+      tabs.forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+      const name = t.dataset.tab;
+      Object.entries(panels).forEach(([k,el]) => el.style.display = (k === name ? "" : "none"));
+    }));
+
+    // Submit
+    $("btn-submit").addEventListener("click", async () => {
+      const job_id = $("submit-job-id").value;
+      const job_proof = $("submit-job-proof").value;
+      if (!String(job_id).trim() || !String(job_proof).trim()){
+        setStatus("submit-status", "job_id এবং job_proof লাগবে।", "err");
+        return;
+      }
+      setStatus("submit-status", "Submitting…", "muted");
+      pretty("submit-out", {});
+      try{
+        const url = "/submit?" + qs({ job_id, job_proof });
+        const data = await callJson(url);
+        pretty("submit-out", data);
+        setStatus("submit-status", "Success ✅", "ok");
+      }catch(e){
+        pretty("submit-out", e);
+        setStatus("submit-status", `Error: HTTP ${e.status ?? ""}`, "err");
+      }
+    });
+
+    $("btn-clear-submit").addEventListener("click", () => {
+      $("submit-job-id").value = "";
+      $("submit-job-proof").value = "";
+      pretty("submit-out", {});
+      setStatus("submit-status", "", "muted");
+    });
+
+    // Tasks
+    $("btn-tasks").addEventListener("click", async () => {
+      const job_id = $("tasks-job-id").value;
+      const task_id = $("tasks-task-id").value;
+      const page = $("tasks-page").value;
+      const limit = $("tasks-limit").value;
+
+      setStatus("tasks-status", "Fetching…", "muted");
+      pretty("tasks-out", {});
+      try{
+        const url = "/tasks?" + qs({ job_id, task_id, page, limit });
+        const data = await callJson(url);
+        pretty("tasks-out", data);
+        setStatus("tasks-status", "Success ✅", "ok");
+      }catch(e){
+        pretty("tasks-out", e);
+        setStatus("tasks-status", `Error: HTTP ${e.status ?? ""}`, "err");
+      }
+    });
+
+    $("btn-clear-tasks").addEventListener("click", () => {
+      $("tasks-job-id").value = "";
+      $("tasks-task-id").value = "";
+      $("tasks-page").value = 1;
+      $("tasks-limit").value = 10;
+      pretty("tasks-out", {});
+      setStatus("tasks-status", "", "muted");
+    });
+
+    // Apply
+    $("btn-apply").addEventListener("click", async () => {
+      const job_id = $("apply-job-id").value;
+      if (!String(job_id).trim()){
+        setStatus("apply-status", "job_id লাগবে।", "err");
+        return;
+      }
+      setStatus("apply-status", "Applying…", "muted");
+      pretty("apply-out", {});
+      try{
+        const url = "/apply?" + qs({ job_id });
+        const data = await callJson(url);
+        pretty("apply-out", data);
+        setStatus("apply-status", "Success ✅", "ok");
+      }catch(e){
+        pretty("apply-out", e);
+        setStatus("apply-status", `Error: HTTP ${e.status ?? ""}`, "err");
+      }
+    });
+
+    $("btn-clear-apply").addEventListener("click", () => {
+      $("apply-job-id").value = "";
+      pretty("apply-out", {});
+      setStatus("apply-status", "", "muted");
+    });
+  </script>
+</body>
+</html>
