@@ -1,161 +1,145 @@
 import os
-import sqlite3
-from datetime import datetime
-from typing import Dict, Any, List
+from typing import Any, Dict, Optional
 
 import httpx
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
-# ================= CONFIG =================
-XGODO_BASE_URL = os.getenv("XGODO_BASE_URL", "https://xgodo.com").rstrip("/")
-XGODO_TOKEN = os.getenv("XGODO_TOKEN", "")
-DB_PATH = "data.db"
-TIMEOUT = 20
+APP_NAME = "xgodo-proxy"
+DEFAULT_BASE_URL = "https://xgodo.com"
 
-FINAL_LOCK = {"submitted", "confirmed"}
-HIDDEN = {"declined"}
+XGODO_BASE_URL = os.getenv("XGODO_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+XGODO_TOKEN = os.getenv("XGODO_TOKEN", "").strip()
+TIMEOUT_SECONDS = float(os.getenv("HTTP_TIMEOUT", "20"))
 
-# ================= APP =================
-app = FastAPI(title="Xgodo User Tracker", version="4.0.0")
+app = FastAPI(title=APP_NAME, version="1.2.0")
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Serve static UI
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 
 @app.get("/")
-def ui():
-    return FileResponse("static/index.html")
+def root():
+    # Simple landing page
+    return FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
-# ================= DB =================
-def db():
-    return sqlite3.connect(DB_PATH)
-
-def init_db():
-    con = db()
-    con.execute("""
-        CREATE TABLE IF NOT EXISTS user_tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT NOT NULL,
-            job_id TEXT NOT NULL,
-            job_task_id TEXT UNIQUE NOT NULL,
-            status TEXT NOT NULL,
-            created_at TEXT,
-            updated_at TEXT
-        )
-    """)
-    con.commit()
-    con.close()
-
-init_db()
-
-# ================= HELPERS =================
-def headers():
-    if not XGODO_TOKEN:
-        raise HTTPException(500, "XGODO_TOKEN missing")
-    return {
-        "Authorization": f"Bearer {XGODO_TOKEN}",
-        "Content-Type": "application/json"
-    }
-
-async def xgodo_details(task_id: str) -> Dict[str, Any]:
-    async with httpx.AsyncClient(timeout=TIMEOUT) as c:
-        r = await c.post(
-            f"{XGODO_BASE_URL}/api/v2/tasks/details",
-            headers=headers(),
-            params={"task_id": task_id},
-            json={}
-        )
-    data = r.json()
-    if r.is_error:
-        raise HTTPException(r.status_code, data)
-    return data.get("task") or data
-
-# ================= API =================
-
-@app.get("/submit")
-async def submit(
-    user_id: str = Query(...),
-    job_id: str = Query(...),
-    job_proof: str = Query(...)
-):
-    payload = {"job_id": job_id, "job_proof": job_proof}
-
-    async with httpx.AsyncClient(timeout=TIMEOUT) as c:
-        r = await c.post(
-            f"{XGODO_BASE_URL}/api/v2/tasks/submit",
-            headers=headers(),
-            json=payload
-        )
-
-    data = r.json()
-    if r.is_error:
-        raise HTTPException(r.status_code, data)
-
-    job_task_id = data.get("submitted", {}).get("job_task_id")
-    if not job_task_id:
-        raise HTTPException(500, "job_task_id missing")
-
-    now = datetime.utcnow().isoformat()
-    con = db()
-    con.execute("""
-        INSERT OR IGNORE INTO user_tasks
-        (user_id, job_id, job_task_id, status, created_at, updated_at)
-        VALUES (?,?,?,?,?,?)
-    """, (user_id, job_id, job_task_id, "submitted", now, now))
-    con.commit()
-    con.close()
-
-    return JSONResponse(content=data)  # raw xgodo response
-
-@app.get("/user/tasks")
-async def user_tasks(user_id: str = Query(...)):
-    con = db()
-    rows = con.execute("""
-        SELECT job_task_id, status
-        FROM user_tasks
-        WHERE user_id=?
-    """, (user_id,)).fetchall()
-
-    results: List[Dict[str, Any]] = []
-
-    for job_task_id, status in rows:
-
-        if status in HIDDEN:
-            continue
-
-        if status in FINAL_LOCK:
-            results.append({
-                "job_task_id": job_task_id,
-                "status": status
-            })
-            continue
-
-        task = await xgodo_details(job_task_id)
-        new_status = task.get("status", status)
-
-        con.execute("""
-            UPDATE user_tasks
-            SET status=?, updated_at=?
-            WHERE job_task_id=?
-        """, (new_status, datetime.utcnow().isoformat(), job_task_id))
-        con.commit()
-
-        if new_status not in HIDDEN:
-            results.append({
-                "job_task_id": job_task_id,
-                "status": new_status,
-                "task": task
-            })
-
-    con.close()
-
-    return {
-        "ok": True,
-        "user_id": user_id,
-        "total": len(results),
-        "tasks": results
-    }
 
 @app.get("/health")
 def health():
-    return {"ok": True}
+    return {"ok": True, "service": APP_NAME}
+
+
+def _require_token() -> str:
+    if not XGODO_TOKEN:
+        raise HTTPException(
+            status_code=500,
+            detail="Server misconfigured: XGODO_TOKEN is not set. Add it as an environment variable in Railway.",
+        )
+    return XGODO_TOKEN
+
+
+def _auth_headers() -> Dict[str, str]:
+    token = _require_token()
+    return {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
+
+
+async def _xgodo_get(path: str, *, params: Optional[Dict[str, Any]] = None) -> Any:
+    url = f"{XGODO_BASE_URL}{path}"
+    async with httpx.AsyncClient(timeout=TIMEOUT_SECONDS) as client:
+        try:
+            res = await client.get(url, headers=_auth_headers(), params=params)
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=502, detail=f"Upstream request failed: {str(e)}")
+
+    if res.status_code == 204:
+        return {"ok": True, "status_code": 204}
+
+    try:
+        data = res.json()
+    except Exception:
+        data = {"_raw": res.text}
+
+    if res.is_error:
+        raise HTTPException(status_code=res.status_code, detail=data)
+
+    return data
+
+
+async def _xgodo_post(
+    path: str,
+    *,
+    params: Optional[Dict[str, Any]] = None,
+    json_body: Optional[Dict[str, Any]] = None,
+) -> Any:
+    url = f"{XGODO_BASE_URL}{path}"
+    async with httpx.AsyncClient(timeout=TIMEOUT_SECONDS) as client:
+        try:
+            res = await client.post(url, headers=_auth_headers(), params=params, json=json_body or {})
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=502, detail=f"Upstream request failed: {str(e)}")
+
+    if res.status_code == 204:
+        return {"ok": True, "status_code": 204}
+
+    try:
+        data = res.json()
+    except Exception:
+        data = {"_raw": res.text}
+
+    if res.is_error:
+        raise HTTPException(status_code=res.status_code, detail=data)
+
+    return data
+
+
+@app.get("/apply")
+async def apply_task(job_id: str = Query(..., description="Job ID (required)")):
+    """
+    Client calls:
+      GET /apply?job_id=...
+
+    Server calls xgodo:
+      GET /api/v2/tasks/apply?job_id=...
+    """
+    data = await _xgodo_get("/api/v2/tasks/apply", params={"job_id": job_id})
+    return JSONResponse(content={"ok": True, "apply": data})
+
+
+@app.get("/submit")
+async def submit_task(
+    job_id: str = Query(..., description="Job ID (required)"),
+    job_proof: str = Query(..., description="Job proof (required)"),
+):
+    """
+    Client calls:
+      GET /submit?job_id=...&job_proof=...
+
+    Server calls xgodo:
+      POST /api/v2/tasks/submit
+      Body: { "job_id": "...", "job_proof": "..." }
+    """
+    payload = {"job_id": job_id, "job_proof": job_proof}
+    data = await _xgodo_post("/api/v2/tasks/submit", json_body=payload)
+    return JSONResponse(content={"ok": True, "submitted": data})
+
+
+@app.get("/tasks")
+async def task_details(
+    task_id: str = Query(..., description="Single task_id details/status (required)"),
+):
+    """
+    ✅ ONLY task_id ভিত্তিক ডিটেল/স্ট্যাটাস দেখা যাবে।
+
+    Client calls:
+      GET /tasks?task_id=...
+
+    Server calls xgodo:
+      POST /api/v2/tasks/details?task_id=...
+    """
+    data = await _xgodo_post("/api/v2/tasks/details", params={"task_id": task_id}, json_body={})
+    return JSONResponse(content={"ok": True, "task": data})
