@@ -29,9 +29,9 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors ${
                   isActive
-                    ? 'bg-zinc-800 text-white font-semibold border border-zinc-700/80 shadow-sm'
+                    ? 'bg-zinc-800 text-white font-medium border border-zinc-700/80 shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850'
                 }`}
               >
