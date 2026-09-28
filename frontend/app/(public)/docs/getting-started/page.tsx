@@ -2,19 +2,22 @@ import React from 'react';
 import { CodeBlock } from '@/components/CodeBlock';
 
 export default function GettingStartedPage() {
-  const curlExample = `curl -X GET "http://localhost:8000/api/v1/utility/uuid" \\
-  -H "X-API-Key: orv_live_demo_platform_key_2026_modular"`;
+  const curlExample = `curl -X POST "http://localhost:8000/api/v1/image/upload" \\
+  -H "X-API-Key: YOUR_ORVIA_API_KEY" \\
+  -F "file=@image.jpg"`;
 
   const responseExample = `{
   "success": true,
   "data": {
-    "ids": [
-      "018f92b1-7a8e-73b2-9a01-49b0e9b9d311"
-    ],
-    "type": "v7",
-    "count": 1
+    "url": "https://res.cloudinary.com/diwp8ug1r/image/upload/...",
+    "secure_url": "https://res.cloudinary.com/diwp8ug1r/image/upload/...",
+    "public_id": "orvia/orvia_live_production_xzg9ns",
+    "format": "jpg",
+    "width": 1200,
+    "height": 800,
+    "bytes": 245120
   },
-  "request_id": "c1f7a4e6-d92a-4a61-80a5-29e847c1b415"
+  "request_id": "req_9c6c3d04-92aa-4da0-92c6-c63f5417713d"
 }`;
 
   return (
