@@ -20,9 +20,10 @@ export interface NavItem {
 }
 
 /**
- * 1. Public Navigation
- * Accessible to all visitors and unauthenticated users.
- * Never includes Dashboard, Admin Panel, or internal data views.
+ * 1. Public Website Navigation
+ * Rendered strictly in the Public Top Navbar.
+ * Used on public routes: /, /apis, /docs, /status, /login, /signup
+ * Never includes Dashboard or Admin links.
  */
 export const publicNavigation: NavItem[] = [
   { name: 'APIs', href: '/apis', icon: Layers },
@@ -31,15 +32,14 @@ export const publicNavigation: NavItem[] = [
 ];
 
 /**
- * 2. Normal User Navigation (Developer / User Dashboard)
- * Context: /dashboard/*
- * Scoped strictly to the authenticated user's credentials and analytics.
- * Never includes platform-wide admin controls.
+ * 2. Authenticated Developer Dashboard Sidebar Navigation
+ * Rendered strictly in the Dashboard Sidebar layout.
+ * Used on all /dashboard/* routes.
+ * Never includes Admin navigation.
  */
 export const userNavigation: NavItem[] = [
   { name: 'Overview', href: '/dashboard', icon: LayoutDashboard, exact: true },
-  { name: 'APIs', href: '/apis', icon: Layers },
-  { name: 'Documentation', href: '/docs', icon: BookOpen },
+  { name: 'APIs', href: '/dashboard/apis', icon: Layers },
   { name: 'API Keys', href: '/dashboard/api-keys', icon: Key },
   { name: 'Usage', href: '/dashboard/usage', icon: BarChart3 },
   { name: 'Request Logs', href: '/dashboard/logs', icon: ListOrdered },
@@ -47,10 +47,10 @@ export const userNavigation: NavItem[] = [
 ];
 
 /**
- * 3. Administrator Navigation (Admin Panel)
- * Context: /admin/*
- * Platform-wide governance, user management, and catalog control.
- * Never mixes user-specific dashboard items.
+ * 3. Administrator Sidebar Navigation
+ * Rendered strictly in the Admin Sidebar layout.
+ * Used on all /admin/* routes.
+ * Never includes normal user dashboard navigation.
  */
 export const adminNavigation: NavItem[] = [
   { name: 'Overview', href: '/admin', icon: LayoutDashboard, exact: true },
@@ -64,19 +64,16 @@ export const adminNavigation: NavItem[] = [
 export type NavigationContext = 'public' | 'user' | 'admin';
 
 /**
- * Resolves navigation context based on:
+ * Resolves layout and navigation context based on:
  * 1. Authentication state
  * 2. User role
- * 3. Current route
+ * 3. Current route path
  */
 export function getNavigationContext(
   pathname: string,
   isAuthenticated: boolean,
   isAdmin: boolean
 ): NavigationContext {
-  if (!isAuthenticated) {
-    return 'public';
-  }
   if (pathname.startsWith('/admin')) {
     return isAdmin ? 'admin' : 'user';
   }
@@ -87,8 +84,8 @@ export function getNavigationContext(
 }
 
 /**
- * Checks if a nav link is active for the current pathname.
- * Avoids false positive root matching (e.g., /dashboard when viewing /dashboard/api-keys).
+ * Determines whether a given navigation link is active based on the current pathname.
+ * Prevents false positive matching for root paths (/dashboard, /admin, /).
  */
 export function isRouteActive(pathname: string, href: string, exact: boolean = false): boolean {
   if (exact || href === '/dashboard' || href === '/admin' || href === '/') {

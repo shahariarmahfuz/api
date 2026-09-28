@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Layers,
-  Activity,
-  Key,
   Menu,
   X,
   Shield,
@@ -14,16 +12,12 @@ import {
   LogOut,
   LogIn,
   LayoutDashboard,
-  ArrowLeft,
   ChevronRight,
+  ArrowRight,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
-import {
-  publicNavigation,
-  getNavigationContext,
-  isRouteActive,
-} from '@/config/navigation';
+import { publicNavigation, isRouteActive } from '@/config/navigation';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -58,14 +52,12 @@ export function Navbar() {
     router.push('/login');
   };
 
-  const navContext = getNavigationContext(pathname, isAuthenticated, isAdmin);
-
   return (
     <nav className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#090a0f]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Main Context */}
-          <div className="flex items-center gap-6">
+          {/* Logo & Public Navigation Links */}
+          <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700/80 flex items-center justify-center text-zinc-100 group-hover:border-zinc-500 transition-colors shadow-sm shadow-zinc-950">
                 <Layers className="w-4 h-4 text-emerald-400" />
@@ -78,63 +70,24 @@ export function Navbar() {
               </span>
             </Link>
 
-            {/* Context Indicators & Desktop Links */}
+            {/* Desktop Public Navigation Links */}
             <div className="hidden md:flex items-center gap-1">
-              {navContext === 'public' && (
-                <>
-                  {publicNavigation.map((link) => {
-                    const isActive = isRouteActive(pathname, link.href, link.exact);
-                    return (
-                      <Link
-                        key={link.name}
-                        href={link.href}
-                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                          isActive
-                            ? 'text-white bg-zinc-800/80 border border-zinc-700/60'
-                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
-                        }`}
-                      >
-                        {link.name}
-                      </Link>
-                    );
-                  })}
-                </>
-              )}
-
-              {navContext === 'user' && (
-                <div className="flex items-center gap-2 text-xs font-mono pl-2 border-l border-zinc-800">
-                  <span className="px-2 py-0.5 rounded bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 flex items-center gap-1.5">
-                    <LayoutDashboard className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Developer Dashboard</span>
-                  </span>
-                  {/* If user is admin, allow jumping to Admin Panel */}
-                  {isAdmin && (
-                    <Link
-                      href="/admin"
-                      className="px-2.5 py-1 rounded bg-indigo-950/40 text-indigo-300 hover:bg-indigo-900/60 border border-indigo-800/50 transition-colors flex items-center gap-1 font-sans text-xs font-medium"
-                    >
-                      <Shield className="w-3 h-3 text-indigo-400" />
-                      <span>Admin Panel</span>
-                    </Link>
-                  )}
-                </div>
-              )}
-
-              {navContext === 'admin' && (
-                <div className="flex items-center gap-2 text-xs font-mono pl-2 border-l border-zinc-800">
-                  <span className="px-2 py-0.5 rounded bg-indigo-950/70 text-indigo-200 border border-indigo-700/60 flex items-center gap-1.5 font-bold">
-                    <Shield className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Administrative Control Panel</span>
-                  </span>
+              {publicNavigation.map((link) => {
+                const isActive = isRouteActive(pathname, link.href, link.exact);
+                return (
                   <Link
-                    href="/dashboard"
-                    className="px-2.5 py-1 rounded bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-colors flex items-center gap-1 font-sans text-xs"
+                    key={link.name}
+                    href={link.href}
+                    className={`px-3.5 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'text-white bg-zinc-800/80 border border-zinc-700/60'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
+                    }`}
                   >
-                    <ArrowLeft className="w-3 h-3" />
-                    <span>Exit to Developer Dashboard</span>
+                    {link.name}
                   </Link>
-                </div>
-              )}
+                );
+              })}
             </div>
           </div>
 
@@ -165,9 +118,10 @@ export function Navbar() {
 
             {isAuthenticated && user ? (
               <div className="flex items-center gap-2">
+                {/* User Dashboard Entry */}
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors text-xs"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors text-xs group"
                 >
                   <div className="w-5 h-5 rounded bg-zinc-800 flex items-center justify-center font-bold text-[10px] text-zinc-200">
                     {user.name.charAt(0).toUpperCase()}
@@ -182,7 +136,19 @@ export function Navbar() {
                   >
                     {user.role}
                   </span>
+                  <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
+
+                {/* If user is Admin, direct link to Admin Panel */}
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-indigo-900/60 bg-indigo-950/40 hover:bg-indigo-950/70 text-indigo-300 text-xs font-medium transition-colors"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Admin Panel</span>
+                  </Link>
+                )}
 
                 <button
                   onClick={handleLogout}
@@ -225,7 +191,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile navigation overlay modal / drawer */}
+      {/* Mobile navigation overlay modal / drawer for Public Website */}
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col justify-start">
           <div className="w-full bg-[#0d0f17] border-b border-zinc-800 p-4 shadow-2xl">
@@ -244,9 +210,8 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* Navigation links based on context */}
+            {/* Public Navigation links */}
             <div className="py-4 space-y-1">
-              {/* Public links always available to browse */}
               {publicNavigation.map((link) => {
                 const isActive = isRouteActive(pathname, link.href, link.exact);
                 return (
@@ -265,7 +230,7 @@ export function Navbar() {
                 );
               })}
 
-              {/* Authenticated user quick routes */}
+              {/* If authenticated, provide entry to Dashboard / Admin */}
               {isAuthenticated && (
                 <div className="pt-2 mt-2 border-t border-zinc-800/80 space-y-1">
                   <Link

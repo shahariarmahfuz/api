@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 import { AuthProvider } from '@/lib/auth-context';
 
 export const metadata: Metadata = {
@@ -17,11 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark h-full bg-[#090a0f] text-zinc-100">
       <body className="min-h-full flex flex-col bg-[#090a0f] text-zinc-100 antialiased selection:bg-emerald-500/20 selection:text-emerald-300">
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
