@@ -98,16 +98,6 @@ export function Navbar() {
                       </Link>
                     );
                   })}
-                  {/* If authenticated user visits public page, provide quick link to Dashboard */}
-                  {isAuthenticated && (
-                    <Link
-                      href="/dashboard"
-                      className="ml-2 px-3 py-1.5 rounded-md text-sm font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/30 transition-colors flex items-center gap-1"
-                    >
-                      <LayoutDashboard className="w-3.5 h-3.5" />
-                      <span>Dashboard</span>
-                    </Link>
-                  )}
                 </>
               )}
 
