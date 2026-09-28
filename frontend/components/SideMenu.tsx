@@ -81,8 +81,8 @@ export function SideMenu() {
     <>
       {/* 1. CLEAN, COMPACT, PREMIUM APPLICATION HEADER */}
       <header className="sticky top-0 z-40 w-full border-b border-zinc-800/80 bg-[#090a0f]/95 backdrop-blur-md">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between">
-          {/* LEFT: Balanced, Refined Orvia Logo (Strict 2.936:1 Aspect Ratio) */}
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 flex items-center justify-between">
+          {/* LEFT: Compact, Elegant Orvia Logo (Target: 95-120px mobile, 120-150px desktop) */}
           <Link
             href={brandHref}
             className="flex items-center transition-opacity hover:opacity-90 shrink-0"
@@ -91,7 +91,7 @@ export function SideMenu() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="w-[135px] sm:w-[155px] md:w-[165px] h-auto aspect-[1198/408] object-contain"
+              className="w-[108px] sm:w-[128px] md:w-[138px] h-auto aspect-[1198/408] object-contain"
             />
           </Link>
 
@@ -100,7 +100,7 @@ export function SideMenu() {
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-            className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white transition-all shadow-sm cursor-pointer group active:scale-95 shrink-0"
+            className="flex items-center gap-2 px-3 py-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white transition-all shadow-sm cursor-pointer group active:scale-95 shrink-0"
           >
             {isOpen ? (
               <X className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
@@ -125,15 +125,15 @@ export function SideMenu() {
 
       {/* 3. SIDE MENU DRAWER (ORIGINATES STRICTLY FROM THE LEFT) */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-[85vw] sm:w-[350px] max-w-[380px] h-full bg-[#0c0e14] border-r border-zinc-800/90 shadow-2xl flex flex-col transform transition-transform duration-250 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-[82vw] sm:w-[320px] max-w-[340px] h-full bg-[#0c0e14] border-r border-zinc-800/90 shadow-2xl flex flex-col transform transition-transform duration-250 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Side Navigation"
       >
-        {/* DRAWER HEADER: [ BALANCED LOGO ] ... [ X ] */}
-        <div className="px-4 py-3 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
+        {/* DRAWER HEADER: [ COMPACT LOGO ] ... [ X ] */}
+        <div className="px-4 py-2.5 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
           <Link
             href={brandHref}
             onClick={() => setIsOpen(false)}
@@ -142,7 +142,7 @@ export function SideMenu() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="w-[125px] sm:w-[130px] h-auto aspect-[1198/408] object-contain"
+              className="w-[102px] sm:w-[110px] h-auto aspect-[1198/408] object-contain"
             />
           </Link>
 
