@@ -53,6 +53,13 @@ async def require_authenticated_user(current_user: User = Depends(get_current_us
     return current_user
 
 
+async def require_user(current_user: User = Depends(get_current_user)) -> User:
+    """Ensure the authenticated caller has USER role and is not an administrator."""
+    if current_user.role.upper() != "USER":
+        raise PermissionDeniedError("Access denied. Admin accounts cannot access user dashboard endpoints.")
+    return current_user
+
+
 async def require_admin(current_user: User = Depends(get_current_user)) -> User:
     """Ensure the authenticated user has ADMIN role."""
     if current_user.role.upper() != "ADMIN":

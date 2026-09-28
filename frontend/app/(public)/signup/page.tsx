@@ -8,7 +8,17 @@ import { useAuth } from '@/lib/auth-context';
 
 export default function SignupPage() {
   const router = useRouter();
-  const { signup, login } = useAuth();
+  const { signup, login, isAuthenticated, user, loading: authLoading } = useAuth();
+
+  React.useEffect(() => {
+    if (!authLoading && isAuthenticated && user) {
+      if (user.role?.toUpperCase() === 'ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/dashboard');
+      }
+    }
+  }, [authLoading, isAuthenticated, user, router]);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

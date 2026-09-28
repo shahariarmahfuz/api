@@ -116,6 +116,13 @@ async def test_admin_access_and_safeguards(client):
     assert self_suspend.status_code == 403
     assert "Safeguard" in self_suspend.json()["error"]["message"]
 
+    # Role separation: Admin cannot access user dashboard endpoints -> 403 Forbidden!
+    admin_user_fail = await client.get("/api/v1/user/profile", headers=admin_headers)
+    assert admin_user_fail.status_code == 403
+    assert admin_user_fail.json()["error"]["code"] == "PERMISSION_DENIED"
+    assert "Admin accounts cannot access user dashboard endpoints" in admin_user_fail.json()["error"]["message"]
+
+
 
 @pytest.mark.asyncio
 async def test_forgot_and_reset_password(client):

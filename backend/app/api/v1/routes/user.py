@@ -2,7 +2,7 @@ from typing import Optional, Dict
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
-from app.api.deps import require_authenticated_user
+from app.api.deps import require_user
 from app.models.user import User
 from app.schemas.user import (
     UserResponse,
@@ -20,7 +20,7 @@ router = APIRouter(prefix="/user", tags=["User Dashboard System"])
 
 
 @router.get("/profile", response_model=StandardResponse[UserResponse])
-async def get_my_profile(current_user: User = Depends(require_authenticated_user)):
+async def get_my_profile(current_user: User = Depends(require_user)):
     """Retrieve authenticated user's profile."""
     return StandardResponse(
         success=True,
@@ -31,7 +31,7 @@ async def get_my_profile(current_user: User = Depends(require_authenticated_user
 @router.patch("/profile", response_model=StandardResponse[UserResponse])
 async def update_my_profile(
     update_in: UserProfileUpdate,
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """Update authenticated user's name or email."""
@@ -47,7 +47,7 @@ async def update_my_profile(
 @router.put("/change-password", response_model=StandardResponse[Dict[str, str]])
 async def change_my_password(
     change_in: UserPasswordChange,
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """Change authenticated user's password."""
@@ -64,7 +64,7 @@ async def change_my_password(
 async def get_my_api_keys(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """Retrieve API keys belonging strictly to the authenticated user."""
@@ -75,7 +75,7 @@ async def get_my_api_keys(
 @router.post("/api-keys", response_model=StandardResponse[ApiKeyCreatedResponse], status_code=status.HTTP_201_CREATED)
 async def create_my_api_key(
     key_in: ApiKeyCreate,
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -94,7 +94,7 @@ async def create_my_api_key(
 @router.delete("/api-keys/{key_id}", response_model=StandardResponse[ApiKeyResponse])
 async def revoke_my_api_key(
     key_id: str,
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """Revoke an API key owned by the authenticated user."""
@@ -109,7 +109,7 @@ async def revoke_my_api_key(
 
 @router.get("/usage", response_model=StandardResponse[UserUsageStatsResponse])
 async def get_my_usage_stats(
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """Retrieve isolated usage statistics and analytics for the authenticated user."""
@@ -128,7 +128,7 @@ async def get_my_request_logs(
     method: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
     page_size: int = Query(25, ge=1, le=100),
-    current_user: User = Depends(require_authenticated_user),
+    current_user: User = Depends(require_user),
     db: AsyncSession = Depends(get_db),
 ):
     """Retrieve request audit logs strictly belonging to the authenticated user."""

@@ -8,7 +8,6 @@ import {
   Menu,
   X,
   Shield,
-  User,
   LogOut,
   LogIn,
   LayoutDashboard,
@@ -56,7 +55,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#090a0f]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Public Navigation Links */}
+          {/* Brand Logo & Public Nav Links */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700/80 flex items-center justify-center text-zinc-100 group-hover:border-zinc-500 transition-colors shadow-sm shadow-zinc-950">
@@ -70,7 +69,7 @@ export function Navbar() {
               </span>
             </Link>
 
-            {/* Desktop Public Navigation Links */}
+            {/* Desktop Public Navigation */}
             <div className="hidden md:flex items-center gap-1">
               {publicNavigation.map((link) => {
                 const isActive = isRouteActive(pathname, link.href, link.exact);
@@ -93,7 +92,7 @@ export function Navbar() {
 
           {/* Right Status & Auth Actions */}
           <div className="hidden md:flex items-center gap-3">
-            {/* System Health Indicator */}
+            {/* System Health */}
             <Link
               href="/status"
               className="flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-mono bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors"
@@ -118,35 +117,32 @@ export function Navbar() {
 
             {isAuthenticated && user ? (
               <div className="flex items-center gap-2">
-                {/* User Dashboard Entry */}
-                <Link
-                  href="/dashboard"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors text-xs group"
-                >
-                  <div className="w-5 h-5 rounded bg-zinc-800 flex items-center justify-center font-bold text-[10px] text-zinc-200">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-zinc-200 font-medium">{user.name}</span>
-                  <span
-                    className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-bold ${
-                      user.role === 'ADMIN'
-                        ? 'bg-indigo-950 text-indigo-300 border border-indigo-800/60'
-                        : 'bg-zinc-800 text-zinc-400'
-                    }`}
-                  >
-                    {user.role}
-                  </span>
-                  <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-
-                {/* If user is Admin, direct link to Admin Panel */}
-                {isAdmin && (
+                {/* STRICT SEPARATION: Admin only sees Admin Panel; Normal User only sees Dashboard */}
+                {isAdmin ? (
                   <Link
                     href="/admin"
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-indigo-900/60 bg-indigo-950/40 hover:bg-indigo-950/70 text-indigo-300 text-xs font-medium transition-colors"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-indigo-900/60 bg-indigo-950/40 hover:bg-indigo-950/70 text-indigo-300 transition-colors text-xs group"
                   >
                     <Shield className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Admin Panel</span>
+                    <span className="font-semibold text-white">Admin Panel</span>
+                    <span className="text-[10px] font-mono uppercase px-1 rounded bg-indigo-900/80 text-indigo-300 font-bold border border-indigo-700/50">
+                      SUPERUSER
+                    </span>
+                    <ArrowRight className="w-3 h-3 text-indigo-400 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                ) : (
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors text-xs group"
+                  >
+                    <div className="w-5 h-5 rounded bg-zinc-800 flex items-center justify-center font-bold text-[10px] text-zinc-200">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-zinc-200 font-medium">{user.name}</span>
+                    <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 font-semibold">
+                      Dashboard
+                    </span>
+                    <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 )}
 
@@ -191,11 +187,11 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile navigation overlay modal / drawer for Public Website */}
+      {/* Mobile navigation overlay for Public Website */}
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col justify-start">
           <div className="w-full bg-[#0d0f17] border-b border-zinc-800 p-4 shadow-2xl">
-            {/* Top drawer header with clear close button */}
+            {/* Header with clear close button */}
             <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
               <div className="flex items-center gap-2">
                 <Layers className="w-5 h-5 text-emerald-400" />
@@ -230,22 +226,10 @@ export function Navbar() {
                 );
               })}
 
-              {/* If authenticated, provide entry to Dashboard / Admin */}
+              {/* Strict redirection: ADMIN goes to /admin, USER goes to /dashboard */}
               {isAuthenticated && (
                 <div className="pt-2 mt-2 border-t border-zinc-800/80 space-y-1">
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-emerald-400 bg-emerald-950/20 border border-emerald-900/40"
-                  >
-                    <div className="flex items-center gap-2">
-                      <LayoutDashboard className="w-4 h-4" />
-                      <span>Developer Dashboard</span>
-                    </div>
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-
-                  {isAdmin && (
+                  {isAdmin ? (
                     <Link
                       href="/admin"
                       onClick={() => setMobileMenuOpen(false)}
@@ -254,6 +238,18 @@ export function Navbar() {
                       <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4 text-indigo-400" />
                         <span>Admin Panel</span>
+                      </div>
+                      <ChevronRight className="w-4 h-4" />
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-emerald-400 bg-emerald-950/20 border border-emerald-900/40"
+                    >
+                      <div className="flex items-center gap-2">
+                        <LayoutDashboard className="w-4 h-4" />
+                        <span>Developer Dashboard</span>
                       </div>
                       <ChevronRight className="w-4 h-4" />
                     </Link>
@@ -268,7 +264,13 @@ export function Navbar() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-xs px-2 text-zinc-400">
                     <span className="truncate">Signed in as {user.name}</span>
-                    <span className="font-mono uppercase font-bold text-zinc-300 px-1.5 py-0.5 bg-zinc-800 rounded">
+                    <span
+                      className={`font-mono uppercase font-bold px-1.5 py-0.5 rounded ${
+                        user.role === 'ADMIN'
+                          ? 'bg-indigo-950 text-indigo-300 border border-indigo-800/60'
+                          : 'bg-zinc-800 text-zinc-300'
+                      }`}
+                    >
                       {user.role}
                     </span>
                   </div>
@@ -301,7 +303,7 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Clickable bottom backdrop to dismiss */}
+          {/* Clickable backdrop */}
           <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
         </div>
       )}
