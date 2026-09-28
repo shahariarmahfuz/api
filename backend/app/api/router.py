@@ -10,6 +10,8 @@ from app.api.v1.routes.api_keys import router as api_keys_router
 from app.api.v1.routes.logs import router as logs_router
 from app.api.v1.routes.system import router as system_router
 from app.api.v1.routes.tester import router as tester_router
+from app.api.v1.routes.plans import router as plans_router
+from app.api.v1.routes.subscriptions import router as subscriptions_router
 from app.modules.registry import module_registry
 
 api_router = APIRouter()
@@ -43,6 +45,9 @@ v1_router.include_router(api_keys_router)
 v1_router.include_router(logs_router)
 v1_router.include_router(system_router)
 v1_router.include_router(tester_router)
+v1_router.include_router(plans_router)
+v1_router.include_router(subscriptions_router)
+
 
 # Mount dynamically registered modular API routers
 for mod_router in module_registry.get_routers():

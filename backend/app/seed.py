@@ -1,13 +1,17 @@
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
+
 from app.models.user import User
 from app.models.api_registry import ApiRegistry
 from app.models.api_key import ApiKey
 from app.models.api_request_log import ApiRequestLog
+from app.models.plan import Plan
+from app.models.coupon import Coupon
 from app.core.security import hash_password, hash_api_key
 from app.core.logging import logger
+
 
 DEMO_APIS = [
     {
@@ -326,5 +330,111 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
         ]
         db.add_all(sample_logs)
 
+    # 5. Seed Initial Plans
+    plan_count_res = await db.execute(select(func.count(Plan.id)) if "func" in locals() else select(Plan).limit(1))
+    existing_plan = plan_count_res.scalars().first()
+    if not existing_plan:
+        # Fetch APIs for basic plan
+        qr_api_res = await db.execute(select(ApiRegistry).where(ApiRegistry.slug.in_(["qr-generator", "uuid-generator", "image-resize"])))
+        basic_apis = list(qr_api_res.scalars().all())
+
+        basic_plan = Plan(
+            name="Basic",
+            slug="basic",
+            description="Essential utilities and lightweight media processing for developers building prototypes.",
+            price=9.0,
+            currency="USD",
+            billing_interval="monthly",
+            duration_days=30,
+            monthly_request_limit=25000,
+            rate_limit_per_minute=30,
+            max_concurrent_requests=5,
+            is_all_apis=False,
+            allowed_apis=basic_apis,
+            features=[
+                "25,000 monthly requests",
+                "30 requests/minute",
+                "QR & UUID generators",
+                "Standard image resizing",
+                "Community support",
+            ],
+            status="ACTIVE",
+        )
+
+        pro_plan = Plan(
+            name="Pro",
+            slug="pro",
+            description="High-throughput access to all media, AI, and intelligence endpoints for scaling production applications.",
+            price=29.0,
+            currency="USD",
+            billing_interval="monthly",
+            duration_days=30,
+            monthly_request_limit=100000,
+            rate_limit_per_minute=60,
+            max_concurrent_requests=15,
+            is_all_apis=True,
+            features=[
+                "100,000 monthly requests",
+                "60 requests/minute",
+                "All current & upcoming APIs",
+                "AI Sentiment analysis",
+                "Sub-millisecond IP lookup",
+                "Priority routing",
+            ],
+            status="ACTIVE",
+        )
+
+        enterprise_plan = Plan(
+            name="Enterprise",
+            slug="enterprise",
+            description="Dedicated infrastructure, extreme throughput, custom concurrency, and SLA guarantees for enterprise platforms.",
+            price=99.0,
+            currency="USD",
+            billing_interval="monthly",
+            duration_days=30,
+            monthly_request_limit=1000000,
+            rate_limit_per_minute=300,
+            max_concurrent_requests=50,
+            is_all_apis=True,
+            features=[
+                "1,000,000 monthly requests",
+                "300 requests/minute",
+                "All platform APIs",
+                "Unlimited concurrency",
+                "Dedicated account support",
+                "99.99% uptime SLA",
+            ],
+            status="ACTIVE",
+        )
+
+        db.add_all([basic_plan, pro_plan, enterprise_plan])
+        await db.flush()
+        logger.info("Seeded initial plans: Basic, Pro, Enterprise.")
+
+        # 6. Seed Initial Coupons
+        c1 = Coupon(
+            code="ORVIA100",
+            description="Launch celebration 100% discount on any plan",
+            discount_type="PERCENTAGE",
+            discount_value=100.0,
+            applicable_plan_id=None,  # Applies to all plans
+            max_uses=1000,
+            is_active=True,
+        )
+
+        c2 = Coupon(
+            code="PRO50",
+            description="50% off first month for Pro plan developers",
+            discount_type="PERCENTAGE",
+            discount_value=50.0,
+            applicable_plan_id=pro_plan.id,
+            max_uses=500,
+            is_active=True,
+        )
+
+        db.add_all([c1, c2])
+        logger.info("Seeded initial coupons: ORVIA100, PRO50.")
+
     await db.commit()
     return stats
+

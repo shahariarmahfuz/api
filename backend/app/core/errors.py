@@ -74,13 +74,44 @@ class DuplicateResourceError(OrviaException):
 
 
 class RateLimitError(OrviaException):
-    def __init__(self, message: str = "Rate limit exceeded", details: Optional[Any] = None):
+    def __init__(self, message: str = "Rate limit exceeded. Please try again later.", details: Optional[Any] = None):
         super().__init__(
             message=message,
             code="RATE_LIMIT_EXCEEDED",
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             details=details,
         )
+
+
+class NoActivePlanError(OrviaException):
+    def __init__(self, message: str = "An active plan is required to use this API.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="NO_ACTIVE_PLAN",
+            status_code=status.HTTP_403_FORBIDDEN,
+            details=details,
+        )
+
+
+class PlanLimitExceededError(OrviaException):
+    def __init__(self, message: str = "Your plan's request limit has been reached.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="PLAN_LIMIT_EXCEEDED",
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            details=details,
+        )
+
+
+class ApiNotInPlanError(OrviaException):
+    def __init__(self, message: str = "Your current plan does not grant access to this API. Please upgrade your plan.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="API_NOT_IN_PLAN",
+            status_code=status.HTTP_403_FORBIDDEN,
+            details=details,
+        )
+
 
 
 def format_error_response(code: str, message: str, request_id: Optional[str] = None, details: Optional[Any] = None) -> dict:

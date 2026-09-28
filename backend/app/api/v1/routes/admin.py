@@ -1,4 +1,5 @@
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
+
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db, check_database_health
@@ -18,9 +19,22 @@ from app.schemas.api_registry import (
 )
 from app.schemas.api_key import ApiKeyResponse
 from app.schemas.common import StandardResponse, PaginatedResponse
+from app.schemas.plan import (
+    PlanCreate,
+    PlanUpdate,
+    PlanStatusUpdate,
+    PlanResponse,
+)
+from app.schemas.coupon import (
+    CouponCreate,
+    CouponUpdate,
+    CouponStatusUpdate,
+    CouponResponse,
+)
 from app.services.admin_service import AdminService
 from app.services.registry_service import RegistryService
 from app.services.api_key_service import ApiKeyService
+
 
 router = APIRouter(prefix="/admin", tags=["Admin System"])
 
@@ -254,3 +268,176 @@ async def get_admin_settings(
             "cors_policy": "Strict origin or configurable",
         },
     )
+
+
+# 5. Plan Administration
+@router.get("/plans", response_model=StandardResponse[List[Dict[str, Any]]])
+async def list_admin_plans(
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """List all plans with active subscriber counts and allowed APIs."""
+    from app.services.plan_service import PlanService
+    service = PlanService(db)
+    plans = await service.list_admin_plans()
+    return StandardResponse(
+        success=True,
+        data=plans,
+        message="Admin plans retrieved.",
+    )
+
+
+@router.post("/plans", response_model=StandardResponse[PlanResponse], status_code=status.HTTP_201_CREATED)
+async def create_plan(
+    plan_in: PlanCreate,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Create a new subscription plan with usage limits, rate limits, and API entitlements."""
+    from app.services.plan_service import PlanService
+    service = PlanService(db)
+    created = await service.create_plan(plan_in)
+    return StandardResponse(
+        success=True,
+        data=PlanResponse.model_validate(created),
+        message=f"Plan '{created.name}' created successfully.",
+    )
+
+
+@router.get("/plans/{plan_id}", response_model=StandardResponse[PlanResponse])
+async def get_admin_plan_detail(
+    plan_id: str,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get plan details by ID."""
+    from app.services.plan_service import PlanService
+    service = PlanService(db)
+    plan = await service.get_by_id(plan_id)
+    return StandardResponse(
+        success=True,
+        data=PlanResponse.model_validate(plan),
+    )
+
+
+@router.put("/plans/{plan_id}", response_model=StandardResponse[PlanResponse])
+async def update_plan(
+    plan_id: str,
+    plan_in: PlanUpdate,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update plan details, limits, and API entitlements (soft update preserves historical subscriptions)."""
+    from app.services.plan_service import PlanService
+    service = PlanService(db)
+    updated = await service.update_plan(plan_id, plan_in)
+    return StandardResponse(
+        success=True,
+        data=PlanResponse.model_validate(updated),
+        message=f"Plan '{updated.name}' updated successfully.",
+    )
+
+
+@router.patch("/plans/{plan_id}/status", response_model=StandardResponse[PlanResponse])
+async def toggle_plan_status(
+    plan_id: str,
+    body: PlanStatusUpdate,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Soft activate or deactivate a plan."""
+    from app.services.plan_service import PlanService
+    service = PlanService(db)
+    updated = await service.toggle_status(plan_id, body.status)
+    return StandardResponse(
+        success=True,
+        data=PlanResponse.model_validate(updated),
+        message=f"Plan status updated to '{body.status}'.",
+    )
+
+
+# 6. Coupon Administration
+@router.get("/coupons", response_model=StandardResponse[List[Dict[str, Any]]])
+async def list_admin_coupons(
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """List all coupons with usage metrics and plan associations."""
+    from app.services.coupon_service import CouponService
+    service = CouponService(db)
+    coupons = await service.list_admin_coupons()
+    return StandardResponse(
+        success=True,
+        data=coupons,
+        message="Admin coupons retrieved.",
+    )
+
+
+@router.post("/coupons", response_model=StandardResponse[CouponResponse], status_code=status.HTTP_201_CREATED)
+async def create_coupon(
+    coupon_in: CouponCreate,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Create a promotional or plan-specific coupon."""
+    from app.services.coupon_service import CouponService
+    service = CouponService(db)
+    created = await service.create_coupon(coupon_in)
+    return StandardResponse(
+        success=True,
+        data=CouponResponse.model_validate(created),
+        message=f"Coupon '{created.code}' created successfully.",
+    )
+
+
+@router.get("/coupons/{coupon_id}", response_model=StandardResponse[CouponResponse])
+async def get_admin_coupon_detail(
+    coupon_id: str,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get coupon details by ID."""
+    from app.services.coupon_service import CouponService
+    service = CouponService(db)
+    coupon = await service.get_by_id(coupon_id)
+    return StandardResponse(
+        success=True,
+        data=CouponResponse.model_validate(coupon),
+    )
+
+
+@router.put("/coupons/{coupon_id}", response_model=StandardResponse[CouponResponse])
+async def update_coupon(
+    coupon_id: str,
+    coupon_in: CouponUpdate,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update coupon configuration."""
+    from app.services.coupon_service import CouponService
+    service = CouponService(db)
+    updated = await service.update_coupon(coupon_id, coupon_in)
+    return StandardResponse(
+        success=True,
+        data=CouponResponse.model_validate(updated),
+        message=f"Coupon '{updated.code}' updated successfully.",
+    )
+
+
+@router.patch("/coupons/{coupon_id}/status", response_model=StandardResponse[CouponResponse])
+async def toggle_coupon_status(
+    coupon_id: str,
+    body: CouponStatusUpdate,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Activate or deactivate a coupon."""
+    from app.services.coupon_service import CouponService
+    service = CouponService(db)
+    updated = await service.toggle_status(coupon_id, body.is_active)
+    return StandardResponse(
+        success=True,
+        data=CouponResponse.model_validate(updated),
+        message=f"Coupon active status set to {body.is_active}.",
+    )
+

@@ -6,6 +6,7 @@ from app.models.base import Base, TimestampMixin, generate_uuid
 if TYPE_CHECKING:
     from app.models.api_key import ApiKey
     from app.models.api_request_log import ApiRequestLog
+    from app.models.subscription import Subscription
 
 
 class User(Base, TimestampMixin):
@@ -21,6 +22,8 @@ class User(Base, TimestampMixin):
     # Relationships
     api_keys: Mapped[List["ApiKey"]] = relationship("ApiKey", back_populates="owner", cascade="all, delete-orphan")
     request_logs: Mapped[List["ApiRequestLog"]] = relationship("ApiRequestLog", back_populates="user")
+    subscriptions: Mapped[List["Subscription"]] = relationship("Subscription", back_populates="user", cascade="all, delete-orphan")
+
 
     @property
     def is_admin(self) -> bool:

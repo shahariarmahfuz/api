@@ -28,9 +28,21 @@ async def execute_api_test(
     registry_service = RegistryService(db)
     api_spec = await registry_service.get_by_slug(slug)
 
-    # If the API requires authentication, verify the key
+    # 1. Is API active/beta?
+    if api_spec.status not in ("active", "beta"):
+        raise ValidationError(f"API '{api_spec.name}' is currently {api_spec.status} and cannot be executed.")
+
+    # 2 & 3. If API requires authentication, verify API key and owner
     if api_spec.authentication_required:
-        await verify_api_key(request, x_api_key=x_api_key, db=db)
+        api_key = await verify_api_key(request, x_api_key=x_api_key, db=db)
+        if not api_key.owner_id:
+            raise AuthenticationError("API key does not have an associated owner.")
+
+        # 4, 5, 6, 7. Active subscription, Plan API entitlement, Usage limit, Rate limit
+        from app.services.subscription_service import SubscriptionService
+        sub_service = SubscriptionService(db)
+        await sub_service.check_user_api_access(api_key.owner_id, slug)
+
 
     # Return sample output defined in the documentation or default success
     doc = api_spec.documentation or {}
