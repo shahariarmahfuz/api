@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/lib/auth-context';
+import { SideMenu } from '@/components/SideMenu';
 
 export const metadata: Metadata = {
   title: 'Orvia — Modular API Platform',
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark h-full bg-[#090a0f] text-zinc-100">
       <body className="min-h-full flex flex-col bg-[#090a0f] text-zinc-100 antialiased selection:bg-emerald-500/20 selection:text-emerald-300">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <SideMenu />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

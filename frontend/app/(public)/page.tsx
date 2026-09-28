@@ -51,9 +51,17 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <div className="flex justify-center mb-6">
+          <img
+            src="/orvia-logo.png"
+            alt="Orvia"
+            className="h-12 sm:h-14 md:h-16 w-auto aspect-[3/1] object-contain"
+          />
+        </div>
+
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-zinc-900 border border-zinc-800 text-zinc-300 mb-6">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Orvia API Platform Foundation</span>
+          <span>Modular API Platform Foundation</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.15]">

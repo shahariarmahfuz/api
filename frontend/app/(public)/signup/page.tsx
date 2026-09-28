@@ -65,11 +65,12 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400">
-              <Layers className="w-4 h-4" />
-            </div>
-            <span className="font-bold text-xl text-white">Orvia</span>
+          <Link href="/" className="inline-block">
+            <img
+              src="/orvia-logo.png"
+              alt="Orvia"
+              className="h-10 w-auto aspect-[3/1] object-contain mx-auto"
+            />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-white mt-4">
             Create Developer Account
