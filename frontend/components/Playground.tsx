@@ -83,9 +83,9 @@ export function Playground({
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden my-6">
+    <div className="rounded-xl border border-white/[0.08] bg-[#050505] overflow-hidden my-6">
       {/* Header */}
-      <div className="p-4 border-b border-zinc-800/80 bg-zinc-900/40 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 border-b border-white/[0.06] bg-[#080808] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <MethodBadge method={method} size="md" />
           <span className="font-mono text-sm text-zinc-200 font-semibold">{endpoint}</span>

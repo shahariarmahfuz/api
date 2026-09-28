@@ -213,11 +213,11 @@ export default function AdminPlansPage() {
       )}
 
       {/* Plans Table */}
-      <div className="rounded-2xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.08] bg-[#050505] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400 font-mono">
+              <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400 font-mono">
                 <th className="py-3 px-4">Plan Name</th>
                 <th className="py-3 px-4">Price / Interval</th>
                 <th className="py-3 px-4">Request Limit</th>
@@ -228,7 +228,7 @@ export default function AdminPlansPage() {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/60 font-mono">
+            <tbody className="divide-y divide-white/[0.06] font-mono">
               {loading ? (
                 <tr>
                   <td colSpan={8} className="py-12 text-center text-zinc-500">
@@ -243,7 +243,7 @@ export default function AdminPlansPage() {
                 </tr>
               ) : (
                 plans.map((p) => (
-                  <tr key={p.id} className="hover:bg-zinc-900/40">
+                  <tr key={p.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-3 px-4">
                       <div>
                         <span className="font-bold text-white text-sm block font-sans">
@@ -270,7 +270,7 @@ export default function AdminPlansPage() {
                           All APIs
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded text-[10px] bg-zinc-800 border border-zinc-700 text-zinc-300">
+                        <span className="px-2 py-0.5 rounded text-[10px] bg-[#080808] border border-white/[0.08] text-zinc-300">
                           {p.allowed_apis?.length || 0} APIs
                         </span>
                       )}
@@ -286,7 +286,7 @@ export default function AdminPlansPage() {
                         className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                           p.status === 'ACTIVE'
                             ? 'bg-emerald-950/70 text-emerald-400 border border-emerald-500/30'
-                            : 'bg-zinc-800 text-zinc-500 border border-zinc-700'
+                            : 'bg-[#080808] text-zinc-500 border border-white/[0.08]'
                         }`}
                       >
                         {p.status}
@@ -296,7 +296,7 @@ export default function AdminPlansPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEditModal(p)}
-                          className="p-1.5 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white"
+                          className="p-1.5 rounded-lg border border-white/[0.08] hover:border-zinc-700 bg-[#080808] text-zinc-300 hover:text-white"
                           title="Edit Plan"
                         >
                           <Edit className="w-3.5 h-3.5" />
@@ -325,7 +325,7 @@ export default function AdminPlansPage() {
       {/* CREATE / EDIT MODAL */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 overflow-y-auto">
-          <div className="w-full max-w-2xl rounded-2xl border border-zinc-800 bg-[#0e1017] p-6 shadow-2xl my-8 space-y-5">
+          <div className="w-full max-w-2xl rounded-2xl border border-white/[0.08] bg-[#050505] p-6 shadow-2xl my-8 space-y-5">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white tracking-tight">
@@ -337,7 +337,7 @@ export default function AdminPlansPage() {
               </div>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800"
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -358,7 +358,7 @@ export default function AdminPlansPage() {
                       }
                     }}
                     placeholder="e.g. Starter, Pro, Enterprise"
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-sans focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-sans focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <div>
@@ -370,7 +370,7 @@ export default function AdminPlansPage() {
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     placeholder="e.g. starter"
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-mono focus:outline-none focus:border-indigo-500 disabled:opacity-60"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-mono focus:outline-none focus:border-indigo-500 disabled:opacity-60"
                   />
                 </div>
               </div>
@@ -383,7 +383,7 @@ export default function AdminPlansPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Summary of what is included in this plan..."
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-sans focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-sans focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
@@ -397,7 +397,7 @@ export default function AdminPlansPage() {
                     required
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <div>
@@ -408,7 +408,7 @@ export default function AdminPlansPage() {
                       setBillingInterval(e.target.value);
                       setDurationDays(e.target.value === 'yearly' ? 365 : 30);
                     }}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   >
                     <option value="monthly">Monthly</option>
                     <option value="yearly">Yearly</option>
@@ -422,7 +422,7 @@ export default function AdminPlansPage() {
                     required
                     value={durationDays}
                     onChange={(e) => setDurationDays(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -436,7 +436,7 @@ export default function AdminPlansPage() {
                     required
                     value={monthlyLimit}
                     onChange={(e) => setMonthlyLimit(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <div>
@@ -447,7 +447,7 @@ export default function AdminPlansPage() {
                     required
                     value={rateLimit}
                     onChange={(e) => setRateLimit(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <div>
@@ -458,13 +458,13 @@ export default function AdminPlansPage() {
                     required
                     value={maxConcurrent}
                     onChange={(e) => setMaxConcurrent(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
 
               {/* API Entitlement selection */}
-              <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/40 space-y-3">
+              <div className="p-4 rounded-xl border border-white/[0.08] bg-[#080808] space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-bold text-white block">API Endpoint Entitlements</span>
@@ -477,14 +477,14 @@ export default function AdminPlansPage() {
                       type="checkbox"
                       checked={isAllApis}
                       onChange={(e) => setIsAllApis(e.target.checked)}
-                      className="rounded bg-zinc-800 border-zinc-700 text-indigo-600 focus:ring-0"
+                      className="rounded bg-black border-white/[0.1] text-indigo-600 focus:ring-0"
                     />
                     <span className="text-zinc-200 font-bold">Grant Access to All APIs</span>
                   </label>
                 </div>
 
                 {!isAllApis && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto pt-2 border-t border-zinc-800">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto pt-2 border-t border-white/[0.06]">
                     {availableApis.map((apiItem) => {
                       const isSelected = selectedApiIds.includes(apiItem.id);
                       return (
@@ -494,7 +494,7 @@ export default function AdminPlansPage() {
                           className={`p-2 rounded-lg border cursor-pointer flex items-center justify-between transition-colors ${
                             isSelected
                               ? 'bg-indigo-950/40 border-indigo-500/40 text-white'
-                              : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                              : 'bg-[#050505] border-white/[0.08] text-zinc-400 hover:text-zinc-200'
                           }`}
                         >
                           <div className="min-w-0 pr-2">
@@ -519,15 +519,15 @@ export default function AdminPlansPage() {
                   value={features}
                   onChange={(e) => setFeatures(e.target.value)}
                   placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-sans focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-sans focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white"
+                  className="px-4 py-2 rounded-xl border border-white/[0.08] bg-[#080808] text-zinc-300 hover:text-white"
                 >
                   Cancel
                 </button>

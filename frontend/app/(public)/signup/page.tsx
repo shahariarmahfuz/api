@@ -69,7 +69,7 @@ export default function SignupPage() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="h-10 w-auto aspect-[1198/408] object-contain mx-auto"
+              className="w-[120px] sm:w-[130px] aspect-[1198/408] object-contain mx-auto"
             />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-white mt-4">
@@ -81,7 +81,7 @@ export default function SignupPage() {
         </div>
 
         {/* Signup Card */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-[#0e1017] shadow-xl">
+        <div className="p-6 rounded-2xl border border-white/[0.08] bg-[#050505] shadow-2xl">
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-rose-950/40 border border-rose-800/50 flex items-start gap-2 text-xs text-rose-300">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -100,7 +100,7 @@ export default function SignupPage() {
                 placeholder="Alex Developer"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 
@@ -114,7 +114,7 @@ export default function SignupPage() {
                 placeholder="alex@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 
@@ -128,7 +128,7 @@ export default function SignupPage() {
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 
@@ -142,7 +142,7 @@ export default function SignupPage() {
                 placeholder="••••••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 
@@ -165,7 +165,7 @@ export default function SignupPage() {
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-zinc-800/80 text-center text-xs text-zinc-400">
+          <div className="mt-6 pt-6 border-t border-white/[0.06] text-center text-xs text-zinc-400">
             <span>Already have an account? </span>
             <Link href="/login" className="text-emerald-400 hover:underline font-medium">
               Log In

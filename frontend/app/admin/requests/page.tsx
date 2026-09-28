@@ -59,7 +59,7 @@ export default function AdminRequestsPage() {
         <button
           onClick={loadRequests}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-mono text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/[0.08] bg-[#080808] text-xs font-mono text-zinc-300 hover:text-white hover:bg-white/[0.04] transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
@@ -67,9 +67,9 @@ export default function AdminRequestsPage() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-wrap items-center gap-3 p-3 rounded-xl border border-zinc-800 bg-[#0e1017]">
+      <div className="flex flex-wrap items-center gap-3 p-3 rounded-2xl border border-white/[0.08] bg-[#050505]">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
             value={endpointFilter}
@@ -78,7 +78,7 @@ export default function AdminRequestsPage() {
               setPage(1);
             }}
             placeholder="Filter by endpoint path..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-[#080808] border border-white/[0.08] rounded-xl text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 font-mono transition-colors"
           />
         </div>
 
@@ -89,7 +89,7 @@ export default function AdminRequestsPage() {
             setStatusCodeFilter(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 focus:outline-none focus:border-zinc-700"
+          className="px-3 py-2 text-xs font-mono rounded-xl bg-[#080808] border border-white/[0.08] text-zinc-300 focus:outline-none focus:border-indigo-500 transition-colors"
         >
           <option value="all">All Status Codes</option>
           <option value="200">200 OK</option>
@@ -107,7 +107,7 @@ export default function AdminRequestsPage() {
             setMethodFilter(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 focus:outline-none focus:border-zinc-700"
+          className="px-3 py-2 text-xs font-mono rounded-xl bg-[#080808] border border-white/[0.08] text-zinc-300 focus:outline-none focus:border-indigo-500 transition-colors"
         >
           <option value="all">All Methods</option>
           <option value="GET">GET</option>
@@ -124,7 +124,7 @@ export default function AdminRequestsPage() {
           Loading platform audit records...
         </div>
       ) : requests.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-zinc-800 rounded-xl bg-[#0e1017]/40">
+        <div className="text-center py-16 border border-dashed border-white/[0.08] rounded-2xl bg-[#050505]/40">
           <ListOrdered className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
           <h3 className="text-base font-semibold text-zinc-300">No Request Logs</h3>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
@@ -132,11 +132,11 @@ export default function AdminRequestsPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#050505] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400">
+                <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                   <th className="py-3 px-4">Request ID</th>
                   <th className="py-3 px-4">Method</th>
                   <th className="py-3 px-4">Endpoint</th>
@@ -147,10 +147,10 @@ export default function AdminRequestsPage() {
                   <th className="py-3 px-4 text-right">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-white/[0.04]">
                 {requests.map((r) => (
-                  <tr key={r.id} className="hover:bg-zinc-900/30 transition-colors">
-                    <td className="py-3 px-4 text-zinc-400 text-[11px]">
+                  <tr key={r.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3 px-4 text-zinc-500 text-[11px]">
                       {r.request_id?.slice(0, 14)}...
                     </td>
                     <td className="py-3 px-4">
@@ -159,12 +159,12 @@ export default function AdminRequestsPage() {
                     <td className="py-3 px-4 text-zinc-200 font-semibold">{r.endpoint}</td>
                     <td className="py-3 px-4">
                       <span
-                        className={`px-1.5 py-0.5 rounded text-[11px] font-bold ${
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                           r.status_code < 300
-                            ? 'bg-emerald-950/60 text-emerald-400'
+                            ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50'
                             : r.status_code < 500
-                            ? 'bg-amber-950/60 text-amber-400'
-                            : 'bg-rose-950/60 text-rose-400'
+                            ? 'bg-amber-950/60 text-amber-400 border border-amber-800/50'
+                            : 'bg-rose-950/60 text-rose-400 border border-rose-800/50'
                         }`}
                       >
                         {r.status_code}
@@ -188,7 +188,7 @@ export default function AdminRequestsPage() {
                         <span className="text-zinc-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-right text-zinc-400">
+                    <td className="py-3 px-4 text-right text-zinc-500">
                       {new Date(r.timestamp).toLocaleTimeString()}
                     </td>
                   </tr>
@@ -199,7 +199,7 @@ export default function AdminRequestsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="p-3 border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <div className="p-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
               <span>
                 Page {page} of {totalPages} ({totalCount} total events)
               </span>
@@ -207,14 +207,14 @@ export default function AdminRequestsPage() {
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 disabled:opacity-40"
+                  className="px-3 py-1 rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-300 hover:text-white disabled:opacity-40 transition-colors"
                 >
                   Prev
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage((p) => p + 1)}
-                  className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 disabled:opacity-40"
+                  className="px-3 py-1 rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-300 hover:text-white disabled:opacity-40 transition-colors"
                 >
                   Next
                 </button>

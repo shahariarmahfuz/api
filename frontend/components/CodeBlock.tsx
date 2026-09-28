@@ -19,8 +19,8 @@ export function CodeBlock({ code, language = 'bash', title }: CodeBlockProps) {
   };
 
   return (
-    <div className="rounded-lg border border-zinc-800 bg-[#0d0f17] overflow-hidden my-3">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800/80 bg-zinc-900/50 text-xs text-zinc-400">
+    <div className="rounded-lg border border-white/[0.08] bg-[#050505] overflow-hidden my-3">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-white/[0.06] bg-[#080808] text-xs text-zinc-400">
         <span className="font-mono text-zinc-300 font-medium">{title || language}</span>
         <button
           onClick={handleCopy}

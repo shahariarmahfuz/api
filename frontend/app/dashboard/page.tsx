@@ -92,7 +92,7 @@ export default function UserDashboardOverviewPage() {
         <>
           {!hasActivePlan ? (
             /* NO ACTIVE PLAN ALERT BANNER */
-            <div className="p-6 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-[#13110d] to-[#0e1017] shadow-lg relative overflow-hidden">
+            <div className="p-6 rounded-2xl border border-amber-500/30 bg-[#050505] shadow-lg relative overflow-hidden">
               <div className="absolute right-0 top-0 bottom-0 w-64 bg-amber-500/5 blur-3xl pointer-events-none" />
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
                 <div className="flex items-start gap-4">
@@ -125,7 +125,7 @@ export default function UserDashboardOverviewPage() {
             </div>
           ) : (
             /* CURRENT PLAN TELEMETRY CARD */
-            <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-r from-zinc-900/60 via-[#0e1017] to-[#12101e] shadow-lg relative overflow-hidden">
+            <div className="p-6 rounded-2xl border border-white/[0.08] bg-[#050505] shadow-lg relative overflow-hidden">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
                   <div className="flex items-center gap-2.5">
@@ -159,7 +159,7 @@ export default function UserDashboardOverviewPage() {
                 </div>
 
                 {/* Usage meter */}
-                <div className="w-full md:w-80 p-4 rounded-xl border border-zinc-800/80 bg-zinc-950/60">
+                <div className="w-full md:w-80 p-4 rounded-xl border border-white/[0.08] bg-[#080808]">
                   <div className="flex items-center justify-between text-xs mb-2">
                     <span className="text-zinc-400 font-mono">Monthly Request Usage</span>
                     <span className="text-zinc-200 font-mono font-bold">
@@ -168,7 +168,7 @@ export default function UserDashboardOverviewPage() {
                   </div>
 
                   {/* Progress bar */}
-                  <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-white/[0.08] overflow-hidden">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all duration-500"
                       style={{ width: `${Math.min(100, subUsage?.usage_percentage || 0)}%` }}
@@ -192,7 +192,7 @@ export default function UserDashboardOverviewPage() {
 
       {/* Telemetry Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
           <div className="flex items-center justify-between text-zinc-400 mb-2">
             <span className="text-xs font-mono uppercase tracking-wider">Total Requests</span>
             <Activity className="w-4 h-4 text-cyan-400" />
@@ -205,7 +205,7 @@ export default function UserDashboardOverviewPage() {
           </span>
         </div>
 
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
           <div className="flex items-center justify-between text-zinc-400 mb-2">
             <span className="text-xs font-mono uppercase tracking-wider">Requests Today</span>
             <Zap className="w-4 h-4 text-emerald-400" />
@@ -218,7 +218,7 @@ export default function UserDashboardOverviewPage() {
           </span>
         </div>
 
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
           <div className="flex items-center justify-between text-zinc-400 mb-2">
             <span className="text-xs font-mono uppercase tracking-wider">My API Keys</span>
             <Key className="w-4 h-4 text-indigo-400" />
@@ -231,7 +231,7 @@ export default function UserDashboardOverviewPage() {
           </span>
         </div>
 
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
           <div className="flex items-center justify-between text-zinc-400 mb-2">
             <span className="text-xs font-mono uppercase tracking-wider">Plan Status</span>
             <Sparkles className="w-4 h-4 text-amber-400" />
@@ -246,7 +246,7 @@ export default function UserDashboardOverviewPage() {
       </div>
 
       {/* Recent API Activity (Strictly user's own activity) */}
-      <div className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-4">
+      <div className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-sm font-bold text-white">Recent API Activity</h2>
@@ -262,7 +262,7 @@ export default function UserDashboardOverviewPage() {
         </div>
 
         {!stats || stats.recent_activity.length === 0 ? (
-          <div className="text-center py-12 border border-dashed border-zinc-800/80 rounded-lg">
+          <div className="text-center py-12 border border-dashed border-white/[0.08] rounded-lg bg-[#080808]/40">
             <Activity className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
             <h3 className="text-xs font-semibold text-zinc-300">No requests recorded yet</h3>
             <p className="text-[11px] text-zinc-500 mt-1 max-w-xs mx-auto">
@@ -275,7 +275,7 @@ export default function UserDashboardOverviewPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-zinc-800 text-zinc-400">
+                <tr className="border-b border-white/[0.06] text-zinc-400">
                   <th className="pb-2">Method</th>
                   <th className="pb-2">Endpoint</th>
                   <th className="pb-2">Status</th>
@@ -283,9 +283,9 @@ export default function UserDashboardOverviewPage() {
                   <th className="pb-2 text-right">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-white/[0.06]">
                 {stats.recent_activity.map((log: any) => (
-                  <tr key={log.id} className="hover:bg-zinc-900/40">
+                  <tr key={log.id} className="hover:bg-white/[0.02]">
                     <td className="py-2.5">
                       <MethodBadge method={log.method} />
                     </td>

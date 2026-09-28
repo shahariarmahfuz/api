@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="h-10 w-auto aspect-[1198/408] object-contain mx-auto"
+              className="w-[120px] sm:w-[130px] aspect-[1198/408] object-contain mx-auto"
             />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-white mt-4">
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-[#0e1017] shadow-xl">
+        <div className="p-6 rounded-2xl border border-white/[0.08] bg-[#050505] shadow-2xl">
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-rose-950/40 border border-rose-800/50 flex items-start gap-2 text-xs text-rose-300">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
                   placeholder="developer@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                  className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
                 />
               </div>
 
@@ -99,11 +99,11 @@ export default function ForgotPasswordPage() {
               </p>
 
               {resetToken && (
-                <div className="p-3.5 rounded-xl border border-zinc-800 bg-[#07080d] text-left space-y-2">
+                <div className="p-3.5 rounded-xl border border-white/[0.08] bg-[#080808] text-left space-y-2">
                   <span className="text-[11px] font-mono text-zinc-400 block">
                     Demo Environment Token:
                   </span>
-                  <div className="font-mono text-xs text-emerald-400 break-all p-2 rounded bg-zinc-900 border border-zinc-800">
+                  <div className="font-mono text-xs text-emerald-400 break-all p-2 rounded bg-[#050505] border border-white/[0.08]">
                     {resetToken}
                   </div>
                   <Link
@@ -117,7 +117,7 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          <div className="mt-6 pt-6 border-t border-zinc-800/80 text-center text-xs">
+          <div className="mt-6 pt-6 border-t border-white/[0.06] text-center text-xs">
             <Link
               href="/login"
               className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200 transition-colors"

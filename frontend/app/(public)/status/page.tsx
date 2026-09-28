@@ -68,9 +68,9 @@ export default function StatusPage() {
         <h2 className="text-base font-bold text-white mb-2">Service Status</h2>
 
         {/* Backend API */}
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] flex items-center justify-between">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400">
+            <div className="w-9 h-9 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-emerald-400">
               <Server className="w-4 h-4" />
             </div>
             <div>
@@ -89,9 +89,9 @@ export default function StatusPage() {
         </div>
 
         {/* PostgreSQL Database */}
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] flex items-center justify-between">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-cyan-400">
+            <div className="w-9 h-9 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-cyan-400">
               <Database className="w-4 h-4" />
             </div>
             <div>
@@ -116,9 +116,9 @@ export default function StatusPage() {
         </div>
 
         {/* API Registry Service */}
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] flex items-center justify-between">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-indigo-400">
+            <div className="w-9 h-9 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-indigo-400">
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>

@@ -67,10 +67,10 @@ export default function AdminSettingsPage() {
       ) : (
         <>
           {/* Database Health Card */}
-          <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-4">
+          <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400">
+                <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-emerald-400">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
@@ -86,7 +86,7 @@ export default function AdminSettingsPage() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-zinc-800/80 text-xs font-mono">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-white/[0.06] text-xs font-mono">
               <div>
                 <span className="text-zinc-500 block mb-1">Status</span>
                 <span className="text-zinc-200 capitalize">{settings?.database?.status || 'Active'}</span>
@@ -109,9 +109,9 @@ export default function AdminSettingsPage() {
           </div>
 
           {/* Platform Security Policies */}
-          <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-4">
+          <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-indigo-400">
+              <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-indigo-400">
                 <Shield className="w-5 h-5" />
               </div>
               <div>
@@ -120,7 +120,7 @@ export default function AdminSettingsPage() {
               </div>
             </div>
 
-            <div className="divide-y divide-zinc-800/80 text-xs">
+            <div className="divide-y divide-white/[0.06] text-xs">
               <div className="py-3 flex items-center justify-between">
                 <div>
                   <span className="text-zinc-200 font-medium block">Password Storage</span>
@@ -153,7 +153,7 @@ export default function AdminSettingsPage() {
           </div>
 
           {/* Platform Synchronization */}
-          <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-3">
+          <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] space-y-3">
             <h2 className="text-base font-semibold text-white">Platform Seeder & Sync</h2>
             <p className="text-xs text-zinc-400">
               Sync code manifest definitions with PostgreSQL database records.
@@ -162,7 +162,7 @@ export default function AdminSettingsPage() {
               <button
                 onClick={handleReseed}
                 disabled={reseedLoading}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#080808] border border-white/[0.08] hover:bg-[#121212] text-zinc-200 text-xs font-mono transition-colors disabled:opacity-50"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${reseedLoading ? 'animate-spin' : ''}`} />
                 <span>Sync Manifests & Re-seed</span>

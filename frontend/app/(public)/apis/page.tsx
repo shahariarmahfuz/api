@@ -68,7 +68,7 @@ export default function ApiCatalogPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search APIs by name, endpoint, or keyword..."
-            className="w-full pl-10 pr-4 py-2 text-sm bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors"
+            className="w-full pl-10 pr-4 py-2 text-sm bg-[#080808] border border-white/[0.08] rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors"
           />
         </div>
 
@@ -81,7 +81,7 @@ export default function ApiCatalogPage() {
               className={`px-3 py-1.5 rounded-lg border transition-colors ${
                 selectedMethod === m
                   ? 'bg-zinc-100 text-zinc-950 font-bold border-zinc-100'
-                  : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-zinc-200 hover:bg-zinc-800'
+                  : 'bg-[#080808] text-zinc-400 border border-white/[0.08] hover:text-zinc-200 hover:bg-[#121212]'
               }`}
             >
               {m.toUpperCase()}
@@ -91,13 +91,13 @@ export default function ApiCatalogPage() {
       </div>
 
       {/* Category Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-zinc-800/80">
+      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-white/[0.06]">
         <button
           onClick={() => setSelectedCategory('all')}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
             selectedCategory === 'all'
               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-              : 'bg-zinc-900/60 text-zinc-400 border border-zinc-800 hover:text-zinc-200'
+              : 'bg-[#080808] text-zinc-400 border border-white/[0.08] hover:text-zinc-200'
           }`}
         >
           All Categories
@@ -109,7 +109,7 @@ export default function ApiCatalogPage() {
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap capitalize transition-colors flex items-center gap-1.5 ${
               selectedCategory === cat.category
                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                : 'bg-zinc-900/60 text-zinc-400 border border-zinc-800 hover:text-zinc-200'
+                : 'bg-[#080808] text-zinc-400 border border-white/[0.08] hover:text-zinc-200'
             }`}
           >
             <span>{cat.category}</span>
@@ -126,12 +126,12 @@ export default function ApiCatalogPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="p-6 rounded-xl border border-zinc-800/60 bg-zinc-900/30 animate-pulse h-48"
+              className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] animate-pulse h-48"
             />
           ))}
         </div>
       ) : filteredApis.length === 0 ? (
-        <div className="text-center py-20 border border-dashed border-zinc-800 rounded-xl">
+        <div className="text-center py-20 border border-dashed border-white/[0.08] rounded-xl bg-[#050505]/40">
           <Layers className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
           <h3 className="text-base font-semibold text-zinc-300">No APIs found</h3>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
@@ -144,7 +144,7 @@ export default function ApiCatalogPage() {
             <Link
               key={apiItem.id}
               href={`/apis/${apiItem.slug}`}
-              className="group p-5 rounded-xl border border-zinc-800/80 bg-[#0e1017] hover:bg-[#12141e] hover:border-zinc-700 transition-all flex flex-col justify-between"
+              className="group p-5 rounded-xl border border-white/[0.08] bg-[#050505] hover:bg-[#080808] hover:border-white/[0.16] transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -163,7 +163,7 @@ export default function ApiCatalogPage() {
                 </p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-zinc-800/60 space-y-2">
+              <div className="pt-4 mt-4 border-t border-white/[0.06] space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
                   <span className="truncate max-w-[200px] text-zinc-400">
                     {apiItem.endpoint}

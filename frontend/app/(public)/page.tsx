@@ -95,12 +95,12 @@ export default function HomePage() {
       </section>
 
       {/* Platform Telemetry Bar */}
-      <section className="border-y border-zinc-800/80 bg-[#0c0e14] py-8">
+      <section className="border-y border-white/[0.06] bg-[#050505] py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="p-3">
               <p className="text-2xl sm:text-3xl font-bold font-mono text-zinc-100">
-                {overview?.total_apis ?? 6}
+                {overview?.total_apis ?? 1}
               </p>
               <p className="text-xs text-zinc-400 uppercase tracking-wider font-mono mt-1">
                 Registered APIs
@@ -146,8 +146,8 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 mb-4">
+          <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-emerald-400 mb-4">
               <Layers className="w-5 h-5" />
             </div>
             <h3 className="text-base font-semibold text-white">Central API Registry</h3>
@@ -156,8 +156,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-indigo-400 mb-4">
+          <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-indigo-400 mb-4">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <h3 className="text-base font-semibold text-white">Unified Key Auth</h3>
@@ -166,8 +166,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-cyan-400 mb-4">
+          <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-cyan-400 mb-4">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="text-base font-semibold text-white">Interactive Sandbox</h3>
@@ -179,7 +179,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured APIs Preview */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-900">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.06]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
@@ -203,7 +203,7 @@ export default function HomePage() {
             <Link
               key={item.id}
               href={`/apis/${item.slug}`}
-              className="group p-5 rounded-xl border border-zinc-800/80 bg-[#0e1017] hover:bg-[#12141e] hover:border-zinc-700 transition-all flex flex-col justify-between"
+              className="group p-5 rounded-xl border border-white/[0.08] bg-[#050505] hover:bg-[#080808] hover:border-white/[0.16] transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -221,7 +221,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-zinc-800/60 flex items-center justify-between text-xs font-mono text-zinc-400">
+              <div className="pt-4 mt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
                 <span className="truncate max-w-[200px] text-zinc-400">{item.endpoint}</span>
                 <span className="text-zinc-400">{item.rate_limit}</span>
               </div>

@@ -4,9 +4,9 @@ import { Layers } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="border-t border-zinc-900 bg-[#07080c] py-12 text-sm text-zinc-500">
+    <footer className="border-t border-white/[0.06] bg-[#000000] py-12 text-sm text-zinc-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-zinc-900">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-white/[0.06]">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <img

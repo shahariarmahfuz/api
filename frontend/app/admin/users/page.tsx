@@ -120,7 +120,7 @@ export default function AdminUsersPage() {
         <button
           onClick={loadUsers}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-mono text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/[0.08] bg-[#080808] text-xs font-mono text-zinc-300 hover:text-white hover:bg-white/[0.04] transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh List</span>
@@ -146,9 +146,9 @@ export default function AdminUsersPage() {
       )}
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-wrap items-center gap-3 p-3 rounded-xl border border-zinc-800 bg-[#0e1017]">
+      <div className="flex flex-wrap items-center gap-3 p-3 rounded-2xl border border-white/[0.08] bg-[#050505]">
         <div className="relative flex-1 min-w-[220px]">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
             value={search}
@@ -157,7 +157,7 @@ export default function AdminUsersPage() {
               setPage(1);
             }}
             placeholder="Search users by name or email..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-[#080808] border border-white/[0.08] rounded-xl text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors"
           />
         </div>
 
@@ -168,7 +168,7 @@ export default function AdminUsersPage() {
             setRoleFilter(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 focus:outline-none focus:border-zinc-700"
+          className="px-3 py-2 text-xs font-mono rounded-xl bg-[#080808] border border-white/[0.08] text-zinc-300 focus:outline-none focus:border-indigo-500 transition-colors"
         >
           <option value="all">All Roles</option>
           <option value="USER">USER</option>
@@ -182,7 +182,7 @@ export default function AdminUsersPage() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 focus:outline-none focus:border-zinc-700"
+          className="px-3 py-2 text-xs font-mono rounded-xl bg-[#080808] border border-white/[0.08] text-zinc-300 focus:outline-none focus:border-indigo-500 transition-colors"
         >
           <option value="all">All Statuses</option>
           <option value="active">Active</option>
@@ -196,7 +196,7 @@ export default function AdminUsersPage() {
           Loading user records...
         </div>
       ) : users.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-zinc-800 rounded-xl bg-[#0e1017]/40">
+        <div className="text-center py-16 border border-dashed border-white/[0.08] rounded-2xl bg-[#050505]/40">
           <Users className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
           <h3 className="text-base font-semibold text-zinc-300">No Users Found</h3>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
@@ -204,11 +204,11 @@ export default function AdminUsersPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#050505] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400">
+                <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                   <th className="py-3 px-4">User</th>
                   <th className="py-3 px-4">Role</th>
                   <th className="py-3 px-4">Status</th>
@@ -218,21 +218,21 @@ export default function AdminUsersPage() {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-white/[0.04]">
                 {users.map((u) => {
                   const isCurrentAdmin = currentAdmin?.id === u.id;
                   return (
-                    <tr key={u.id} className="hover:bg-zinc-900/30 transition-colors">
+                    <tr key={u.id} className="hover:bg-white/[0.02] transition-colors">
                       <td className="py-3 px-4">
                         <div className="font-sans font-semibold text-zinc-200">{u.name}</div>
-                        <div className="text-zinc-400 text-[11px] font-mono">{u.email}</div>
+                        <div className="text-zinc-500 text-[11px] font-mono">{u.email}</div>
                       </td>
                       <td className="py-3 px-4">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase ${
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase ${
                             u.role === 'ADMIN'
                               ? 'bg-indigo-950/80 text-indigo-300 border border-indigo-700/60'
-                              : 'bg-zinc-800 text-zinc-300'
+                              : 'bg-white/[0.04] text-zinc-300 border border-white/[0.08]'
                           }`}
                         >
                           {u.role}
@@ -240,7 +240,7 @@ export default function AdminUsersPage() {
                       </td>
                       <td className="py-3 px-4">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase ${
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase ${
                             u.status === 'active'
                               ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50'
                               : 'bg-rose-950/60 text-rose-400 border border-rose-800/50'
@@ -255,7 +255,7 @@ export default function AdminUsersPage() {
                       <td className="py-3 px-4 text-zinc-300 font-semibold">
                         {u.requests_count ? u.requests_count.toLocaleString() : 0}
                       </td>
-                      <td className="py-3 px-4 text-zinc-400">
+                      <td className="py-3 px-4 text-zinc-500">
                         {new Date(u.created_at).toLocaleDateString()}
                       </td>
                       <td className="py-3 px-4 text-right">
@@ -263,7 +263,7 @@ export default function AdminUsersPage() {
                           {/* View details */}
                           <button
                             onClick={() => handleViewDetails(u.id)}
-                            className="p-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors text-[11px] flex items-center gap-1 px-2"
+                            className="p-1 rounded-lg bg-[#080808] border border-white/[0.08] hover:bg-white/[0.04] text-zinc-300 hover:text-white transition-colors text-[11px] flex items-center gap-1 px-2.5"
                             title="View User Details"
                           >
                             <Eye className="w-3 h-3" />
@@ -274,12 +274,12 @@ export default function AdminUsersPage() {
                           <button
                             onClick={() => handleToggleStatus(u)}
                             disabled={isCurrentAdmin}
-                            className={`p-1 rounded text-[11px] px-2 flex items-center gap-1 transition-colors ${
+                            className={`p-1 rounded-lg text-[11px] px-2.5 flex items-center gap-1 transition-colors border ${
                               isCurrentAdmin
-                                ? 'opacity-30 cursor-not-allowed bg-zinc-800 text-zinc-500'
+                                ? 'opacity-30 cursor-not-allowed bg-[#080808] border-white/[0.08] text-zinc-500'
                                 : u.status === 'active'
-                                ? 'bg-rose-950/40 text-rose-300 hover:bg-rose-900/60'
-                                : 'bg-emerald-950/40 text-emerald-300 hover:bg-emerald-900/60'
+                                ? 'bg-rose-950/40 border-rose-800/50 text-rose-300 hover:bg-rose-900/60'
+                                : 'bg-emerald-950/40 border-emerald-800/50 text-emerald-300 hover:bg-emerald-900/60'
                             }`}
                             title={
                               isCurrentAdmin
@@ -306,12 +306,12 @@ export default function AdminUsersPage() {
                           <button
                             onClick={() => handleChangeRole(u)}
                             disabled={isCurrentAdmin}
-                            className={`p-1 rounded text-[11px] px-2 flex items-center gap-1 transition-colors ${
+                            className={`p-1 rounded-lg text-[11px] px-2.5 flex items-center gap-1 transition-colors border ${
                               isCurrentAdmin
-                                ? 'opacity-30 cursor-not-allowed bg-zinc-800 text-zinc-500'
+                                ? 'opacity-30 cursor-not-allowed bg-[#080808] border-white/[0.08] text-zinc-500'
                                 : u.role === 'ADMIN'
-                                ? 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-                                : 'bg-indigo-950/60 text-indigo-300 hover:bg-indigo-900/60 border border-indigo-800/50'
+                                ? 'bg-[#080808] border-white/[0.08] text-zinc-300 hover:bg-white/[0.04]'
+                                : 'bg-indigo-950/60 text-indigo-300 hover:bg-indigo-900/60 border-indigo-800/50'
                             }`}
                             title={
                               isCurrentAdmin
@@ -335,7 +335,7 @@ export default function AdminUsersPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="p-3 border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <div className="p-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
               <span>
                 Showing page {page} of {totalPages} ({totalCount} total users)
               </span>
@@ -343,14 +343,14 @@ export default function AdminUsersPage() {
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 disabled:opacity-40"
+                  className="px-3 py-1 rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-300 hover:text-white disabled:opacity-40"
                 >
                   Prev
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage((p) => p + 1)}
-                  className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 disabled:opacity-40"
+                  className="px-3 py-1 rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-300 hover:text-white disabled:opacity-40"
                 >
                   Next
                 </button>
@@ -362,16 +362,16 @@ export default function AdminUsersPage() {
 
       {/* User Details Modal */}
       {selectedUserId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-2xl max-h-[85vh] rounded-xl border border-zinc-800 bg-[#0e1017] shadow-2xl overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-900/40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="w-full max-w-2xl max-h-[85vh] rounded-2xl border border-white/[0.08] bg-[#050505] shadow-2xl overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-white/[0.06] bg-[#080808]">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-indigo-400" />
                 <h3 className="text-sm font-bold text-white">User Inspection & Activity</h3>
               </div>
               <button
                 onClick={() => setSelectedUserId(null)}
-                className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800"
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.04]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -386,7 +386,7 @@ export default function AdminUsersPage() {
               ) : (
                 <>
                   {/* Summary Profile */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-lg bg-zinc-900/40 border border-zinc-800 text-xs font-mono">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-[#080808] border border-white/[0.08] text-xs font-mono">
                     <div>
                       <span className="text-zinc-500 block text-[10px]">User Name</span>
                       <span className="text-white font-sans font-semibold">
@@ -418,13 +418,13 @@ export default function AdminUsersPage() {
                       <span>Associated API Keys ({selectedUserDetail.api_keys?.length || 0})</span>
                     </h4>
                     {!selectedUserDetail.api_keys || selectedUserDetail.api_keys.length === 0 ? (
-                      <p className="text-xs font-mono text-zinc-500 italic p-3 border border-zinc-800 rounded-lg">
+                      <p className="text-xs font-mono text-zinc-500 italic p-3 border border-dashed border-white/[0.08] rounded-xl bg-[#080808]/40">
                         This user has not generated any API keys.
                       </p>
                     ) : (
-                      <div className="rounded-lg border border-zinc-800 overflow-hidden">
+                      <div className="rounded-xl border border-white/[0.08] bg-[#080808] overflow-hidden">
                         <table className="w-full text-left text-xs font-mono">
-                          <thead className="bg-zinc-900/60 text-zinc-400">
+                          <thead className="bg-[#050505] text-zinc-400 border-b border-white/[0.06]">
                             <tr>
                               <th className="p-2.5">Key Name</th>
                               <th className="p-2.5">Prefix</th>
@@ -432,23 +432,23 @@ export default function AdminUsersPage() {
                               <th className="p-2.5">Created</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-zinc-800/60">
+                          <tbody className="divide-y divide-white/[0.04]">
                             {selectedUserDetail.api_keys.map((k: any) => (
                               <tr key={k.id}>
                                 <td className="p-2.5 text-zinc-200 font-sans">{k.name}</td>
                                 <td className="p-2.5 text-zinc-400">{k.key_prefix}••••••••</td>
                                 <td className="p-2.5">
                                   <span
-                                    className={`px-1.5 py-0.5 rounded text-[10px] ${
+                                    className={`px-2 py-0.5 rounded-full text-[10px] ${
                                       k.status === 'active'
-                                        ? 'bg-emerald-950/60 text-emerald-400'
-                                        : 'bg-zinc-800 text-zinc-500'
+                                        ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50'
+                                        : 'bg-white/[0.04] text-zinc-500 border border-white/[0.08]'
                                     }`}
                                   >
                                     {k.status}
                                   </span>
                                 </td>
-                                <td className="p-2.5 text-zinc-400">
+                                <td className="p-2.5 text-zinc-500">
                                   {new Date(k.created_at).toLocaleDateString()}
                                 </td>
                               </tr>
@@ -467,13 +467,13 @@ export default function AdminUsersPage() {
                     </h4>
                     {!selectedUserDetail.recent_activity ||
                     selectedUserDetail.recent_activity.length === 0 ? (
-                      <p className="text-xs font-mono text-zinc-500 italic p-3 border border-zinc-800 rounded-lg">
+                      <p className="text-xs font-mono text-zinc-500 italic p-3 border border-dashed border-white/[0.08] rounded-xl bg-[#080808]/40">
                         No recent API requests logged for this account.
                       </p>
                     ) : (
-                      <div className="rounded-lg border border-zinc-800 overflow-hidden">
+                      <div className="rounded-xl border border-white/[0.08] bg-[#080808] overflow-hidden">
                         <table className="w-full text-left text-xs font-mono">
-                          <thead className="bg-zinc-900/60 text-zinc-400">
+                          <thead className="bg-[#050505] text-zinc-400 border-b border-white/[0.06]">
                             <tr>
                               <th className="p-2.5">Method</th>
                               <th className="p-2.5">Endpoint</th>
@@ -482,13 +482,13 @@ export default function AdminUsersPage() {
                               <th className="p-2.5 text-right">Timestamp</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-zinc-800/60">
+                          <tbody className="divide-y divide-white/[0.04]">
                             {selectedUserDetail.recent_activity.map((r: any) => (
                               <tr key={r.id}>
                                 <td className="p-2.5 font-bold text-zinc-300">{r.method}</td>
                                 <td className="p-2.5 text-zinc-200">{r.endpoint}</td>
                                 <td className="p-2.5">
-                                  <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200 text-[10px]">
+                                  <span className="px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-zinc-200 text-[10px]">
                                     {r.status_code}
                                   </span>
                                 </td>

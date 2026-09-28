@@ -64,7 +64,7 @@ export default function AdminApiKeysPage() {
         <button
           onClick={loadKeys}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-mono text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-[#080808] text-xs font-mono text-zinc-300 hover:text-white hover:bg-[#121212] transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh Keys</span>
@@ -77,7 +77,7 @@ export default function AdminApiKeysPage() {
           Auditing active platform API keys...
         </div>
       ) : keys.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-zinc-800 rounded-xl bg-[#0e1017]/40">
+        <div className="text-center py-16 border border-dashed border-white/[0.08] rounded-xl bg-[#050505]/40">
           <Key className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
           <h3 className="text-base font-semibold text-zinc-300">No API Keys Generated</h3>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
@@ -85,11 +85,11 @@ export default function AdminApiKeysPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+        <div className="rounded-xl border border-white/[0.08] bg-[#050505] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400">
+                <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                   <th className="py-3 px-4">Key Name</th>
                   <th className="py-3 px-4">Masked Key Hash</th>
                   <th className="py-3 px-4">Owner Account</th>
@@ -100,9 +100,9 @@ export default function AdminApiKeysPage() {
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-white/[0.06]">
                 {keys.map((k) => (
-                  <tr key={k.id} className="hover:bg-zinc-900/30 transition-colors">
+                  <tr key={k.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-3 px-4 font-sans font-semibold text-zinc-200">
                       {k.name}
                     </td>
@@ -146,7 +146,7 @@ export default function AdminApiKeysPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="p-3 border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <div className="p-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
               <span>
                 Page {page} of {totalPages} ({totalCount} total keys)
               </span>
@@ -154,14 +154,14 @@ export default function AdminApiKeysPage() {
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 disabled:opacity-40"
+                  className="px-2.5 py-1 rounded bg-[#080808] border border-white/[0.08] text-zinc-300 disabled:opacity-40"
                 >
                   Prev
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage((p) => p + 1)}
-                  className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 disabled:opacity-40"
+                  className="px-2.5 py-1 rounded bg-[#080808] border border-white/[0.08] text-zinc-300 disabled:opacity-40"
                 >
                   Next
                 </button>

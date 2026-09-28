@@ -63,8 +63,8 @@ export default function UserAssetsPage() {
           Loading uploaded assets...
         </div>
       ) : assets.length === 0 ? (
-        <div className="rounded-xl border border-zinc-800 bg-[#0e1017] p-12 text-center">
-          <div className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 mx-auto mb-4">
+        <div className="rounded-xl border border-white/[0.08] bg-[#050505] p-12 text-center">
+          <div className="w-12 h-12 rounded-full bg-[#080808] border border-white/[0.08] flex items-center justify-center text-zinc-500 mx-auto mb-4">
             <FileImage className="w-6 h-6" />
           </div>
           <h3 className="text-base font-semibold text-white">No uploaded assets yet</h3>
@@ -74,7 +74,7 @@ export default function UserAssetsPage() {
           </p>
           <Link
             href="/apis/cloudinary-image-upload"
-            className="inline-flex items-center gap-2 mt-5 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold transition-colors"
+            className="inline-flex items-center gap-2 mt-5 px-4 py-2 rounded-lg bg-[#080808] border border-white/[0.08] hover:bg-[#121212] text-zinc-200 text-xs font-semibold transition-colors"
           >
             <span>Open Image Upload Playground</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -85,11 +85,11 @@ export default function UserAssetsPage() {
           {assets.map((asset) => (
             <div
               key={asset.id}
-              className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden group hover:border-zinc-700 transition-all flex flex-col"
+              className="rounded-xl border border-white/[0.08] bg-[#050505] overflow-hidden group hover:border-white/[0.16] transition-all flex flex-col"
             >
               {/* Image Preview Container */}
               <div
-                className="relative aspect-video bg-zinc-950/60 overflow-hidden cursor-pointer"
+                className="relative aspect-video bg-black overflow-hidden cursor-pointer"
                 onClick={() => setPreviewAsset(asset)}
               >
                 <img
@@ -99,7 +99,7 @@ export default function UserAssetsPage() {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <span className="p-2 rounded-lg bg-zinc-900/90 text-zinc-200 hover:text-white">
+                  <span className="p-2 rounded-lg bg-[#080808]/90 text-zinc-200 hover:text-white">
                     <Maximize2 className="w-4 h-4" />
                   </span>
                 </div>
@@ -120,7 +120,7 @@ export default function UserAssetsPage() {
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] font-mono">
+                <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono">
                   <span className="text-zinc-500">
                     {new Date(asset.created_at).toLocaleDateString()}
                   </span>
@@ -143,14 +143,14 @@ export default function UserAssetsPage() {
       {/* Modal Preview */}
       {previewAsset && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-3xl rounded-2xl border border-zinc-800 bg-[#0e1017] overflow-hidden shadow-2xl">
-            <div className="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/40">
+          <div className="w-full max-w-3xl rounded-2xl border border-white/[0.08] bg-[#050505] overflow-hidden shadow-2xl">
+            <div className="p-4 border-b border-white/[0.06] flex items-center justify-between bg-[#080808]">
               <span className="font-mono text-xs text-zinc-200 font-semibold truncate max-w-md">
                 {previewAsset.cloudinary_public_id}
               </span>
               <button
                 onClick={() => setPreviewAsset(null)}
-                className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -162,7 +162,7 @@ export default function UserAssetsPage() {
                 className="max-h-[55vh] object-contain rounded-lg"
               />
             </div>
-            <div className="p-4 bg-zinc-900/40 border-t border-zinc-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div className="p-4 bg-[#080808] border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
               <div className="space-x-3 text-zinc-400">
                 <span>Format: <strong className="text-zinc-200">{previewAsset.format.toUpperCase()}</strong></span>
                 <span>Dimensions: <strong className="text-zinc-200">{previewAsset.width}×{previewAsset.height}</strong></span>
@@ -172,7 +172,7 @@ export default function UserAssetsPage() {
                 href={previewAsset.secure_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-200 hover:bg-zinc-700 font-sans text-xs font-semibold"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#050505] border border-white/[0.08] text-zinc-200 hover:bg-[#121212] font-sans text-xs font-semibold"
               >
                 <span>Open CDN Asset</span>
                 <ExternalLink className="w-3.5 h-3.5" />

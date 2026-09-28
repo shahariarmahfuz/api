@@ -169,7 +169,7 @@ console.log(data);`;
       </div>
 
       {/* Header Info */}
-      <div className="p-6 rounded-2xl border border-zinc-800 bg-[#0e1017] mb-8">
+      <div className="p-6 rounded-2xl border border-white/[0.08] bg-[#050505] shadow-2xl mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2.5">
             <MethodBadge method={apiData.method} size="md" />
@@ -190,7 +190,7 @@ console.log(data);`;
         </p>
 
         {/* Telemetry Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-zinc-800/80 text-xs font-mono">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-white/[0.06] text-xs font-mono">
           <div>
             <span className="text-zinc-500 block mb-1">HTTP Endpoint</span>
             <span className="text-zinc-200 font-semibold truncate block">
@@ -252,7 +252,7 @@ console.log(data);`;
         {/* Left Column: Parameters and Errors */}
         <div className="space-y-8">
           {/* Request Parameters */}
-          <section className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017]">
+          <section className="p-6 rounded-xl border border-white/[0.08] bg-[#050505]">
             <h3 className="text-base font-bold text-white mb-4">
               Request Parameters
             </h3>
@@ -261,7 +261,7 @@ console.log(data);`;
                 This endpoint does not accept body or query parameters.
               </p>
             ) : (
-              <div className="divide-y divide-zinc-800/80">
+              <div className="divide-y divide-white/[0.06]">
                 {parameters.map((param, idx) => (
                   <div key={idx} className="py-3 first:pt-0 last:pb-0">
                     <div className="flex items-center justify-between font-mono text-xs mb-1">
@@ -293,7 +293,7 @@ console.log(data);`;
 
           {/* Error Responses */}
           {errorResponses.length > 0 && (
-            <section className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017]">
+            <section className="p-6 rounded-xl border border-white/[0.08] bg-[#050505]">
               <h3 className="text-base font-bold text-white mb-4">
                 Error Responses
               </h3>
@@ -301,7 +301,7 @@ console.log(data);`;
                 {errorResponses.map((err, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/40 text-xs font-mono"
+                    className="p-3 rounded-lg border border-white/[0.08] bg-[#080808] text-xs font-mono"
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-rose-400 font-semibold">{err.code}</span>
@@ -318,7 +318,7 @@ console.log(data);`;
         {/* Right Column: Code Snippets & Response Sample */}
         <div className="space-y-8">
           {/* Code Examples Tabs */}
-          <section className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017]">
+          <section className="p-6 rounded-xl border border-white/[0.08] bg-[#050505]">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-bold text-white">Client Code</h3>
               <div className="flex items-center gap-1 text-xs font-mono">
@@ -328,7 +328,7 @@ console.log(data);`;
                     onClick={() => setActiveCodeTab(tab)}
                     className={`px-2.5 py-1 rounded transition-colors ${
                       activeCodeTab === tab
-                        ? 'bg-zinc-800 text-white font-semibold'
+                        ? 'bg-[#080808] border border-white/[0.1] text-white font-semibold'
                         : 'text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
@@ -350,14 +350,14 @@ console.log(data);`;
           </section>
 
           {/* Sample Response */}
-          <section className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017]">
+          <section className="p-6 rounded-xl border border-white/[0.08] bg-[#050505]">
             <h3 className="text-base font-bold text-white mb-2">
               Response Schema (200 OK)
             </h3>
             <p className="text-xs text-zinc-400 mb-3">
               Standardized JSON response envelope returned by Orvia.
             </p>
-            <div className="p-4 rounded-lg bg-[#07080d] border border-zinc-800 font-mono text-xs overflow-x-auto text-emerald-300">
+            <div className="p-4 rounded-lg bg-[#080808] border border-white/[0.08] font-mono text-xs overflow-x-auto text-emerald-300">
               <pre>{JSON.stringify(resExample, null, 2)}</pre>
             </div>
           </section>

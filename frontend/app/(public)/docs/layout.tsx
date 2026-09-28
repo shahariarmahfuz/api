@@ -20,7 +20,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 pb-16">
       {/* Top Docs Navigation Pills (NO persistent sidebar) */}
-      <div className="mb-8 pb-4 border-b border-zinc-800">
+      <div className="mb-8 pb-4 border-b border-white/[0.06]">
         <div className="flex flex-wrap items-center gap-2">
           {docsLinks.map((item) => {
             const isActive = pathname === item.href;
@@ -31,8 +31,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                 href={item.href}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors ${
                   isActive
-                    ? 'bg-zinc-800 text-white font-medium border border-zinc-700/80 shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850'
+                    ? 'bg-white/[0.08] text-white font-medium border border-white/[0.1] shadow-sm'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-emerald-400' : 'text-zinc-500'}`} />

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  Menu,
   X,
   LogIn,
   LogOut,
@@ -79,10 +78,10 @@ export function SideMenu() {
 
   return (
     <>
-      {/* 1. CLEAN, COMPACT, PREMIUM APPLICATION HEADER */}
-      <header className="sticky top-0 z-40 w-full border-b border-zinc-800/80 bg-[#090a0f]/95 backdrop-blur-md">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5 flex items-center justify-between">
-          {/* LEFT: Compact, Elegant Orvia Logo (Target: 95-120px mobile, 120-150px desktop) */}
+      {/* 1. AMOLED BLACK APPLICATION HEADER (TRUE BLACK #000000, SUBTLE SEPARATOR) */}
+      <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#000000]">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between">
+          {/* LEFT: Compact Orvia Logo (Strict 2.936:1 Aspect Ratio) */}
           <Link
             href={brandHref}
             className="flex items-center transition-opacity hover:opacity-90 shrink-0"
@@ -95,21 +94,29 @@ export function SideMenu() {
             />
           </Link>
 
-          {/* RIGHT: Compact, Accessible Menu Button */}
+          {/* RIGHT: Minimal, Borderless Outline Menu Trigger (No container, no border, 44x44px touch target) */}
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-            className="flex items-center gap-2 px-3 py-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white transition-all shadow-sm cursor-pointer group active:scale-95 shrink-0"
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            className="w-11 h-11 flex items-center justify-center text-zinc-300 hover:text-white transition-colors bg-transparent border-none p-0 cursor-pointer focus:outline-none -mr-2 shrink-0 group"
           >
             {isOpen ? (
-              <X className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <X className="w-5 h-5 text-zinc-200 transition-transform group-hover:scale-105" strokeWidth={1.5} />
             ) : (
-              <Menu className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <svg
+                className="w-5 h-5 text-zinc-200 transition-transform group-hover:scale-105"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              >
+                <line x1="3.5" y1="6.5" x2="20.5" y2="6.5" />
+                <line x1="3.5" y1="12" x2="20.5" y2="12" />
+                <line x1="3.5" y1="17.5" x2="20.5" y2="17.5" />
+              </svg>
             )}
-            <span className="text-xs font-sans font-medium tracking-wide uppercase text-zinc-300 group-hover:text-white">
-              {isOpen ? 'Close' : 'Menu'}
-            </span>
           </button>
         </div>
       </header>
@@ -123,9 +130,9 @@ export function SideMenu() {
         />
       )}
 
-      {/* 3. SIDE MENU DRAWER (ORIGINATES STRICTLY FROM THE LEFT) */}
+      {/* 3. SIDE MENU DRAWER (AMOLED BLACK #000000, EMERGES STRICTLY FROM THE LEFT) */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-[82vw] sm:w-[320px] max-w-[340px] h-full bg-[#0c0e14] border-r border-zinc-800/90 shadow-2xl flex flex-col transform transition-transform duration-250 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-[82vw] sm:w-[320px] max-w-[340px] h-full bg-[#000000] border-r border-white/[0.08] shadow-2xl flex flex-col transform transition-transform duration-250 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         role="dialog"
@@ -133,7 +140,7 @@ export function SideMenu() {
         aria-label="Side Navigation"
       >
         {/* DRAWER HEADER: [ COMPACT LOGO ] ... [ X ] */}
-        <div className="px-4 py-2.5 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
+        <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between shrink-0 bg-[#000000]">
           <Link
             href={brandHref}
             onClick={() => setIsOpen(false)}
@@ -150,27 +157,27 @@ export function SideMenu() {
             type="button"
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/80 transition-colors cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center text-zinc-400 hover:text-white bg-transparent border-none p-0 cursor-pointer focus:outline-none transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 text-zinc-300" strokeWidth={1.5} />
           </button>
         </div>
 
-        {/* AUTHENTICATED USER IDENTITY CARD */}
+        {/* AUTHENTICATED USER IDENTITY CARD (ELEVATED SURFACE #050505, SUBTLE BORDER) */}
         {isAuthenticated && user && (
           <div
             className={`p-3 mx-3 my-2.5 rounded-lg border shrink-0 ${
               isAdmin
-                ? 'border-indigo-950/80 bg-indigo-950/20'
-                : 'border-zinc-800/80 bg-zinc-900/40'
+                ? 'border-indigo-950/60 bg-[#050505]'
+                : 'border-white/[0.08] bg-[#050505]'
             }`}
           >
             <div className="flex items-center gap-2.5 mb-2">
               <div
                 className={`w-7 h-7 rounded-md flex items-center justify-center font-bold text-xs ${
                   isAdmin
-                    ? 'bg-indigo-900/80 border border-indigo-700/60 text-indigo-200'
-                    : 'bg-zinc-800 border border-zinc-700/60 text-white'
+                    ? 'bg-indigo-950/60 border border-indigo-800/40 text-indigo-300'
+                    : 'bg-[#080808] border border-white/[0.1] text-zinc-200'
                 }`}
               >
                 {user.name.charAt(0).toUpperCase()}
@@ -182,15 +189,15 @@ export function SideMenu() {
             </div>
             <div
               className={`flex items-center justify-between pt-1.5 border-t text-[10px] ${
-                isAdmin ? 'border-indigo-900/40' : 'border-zinc-800'
+                isAdmin ? 'border-indigo-950/40' : 'border-white/[0.06]'
               }`}
             >
               <span className="text-zinc-500 font-sans">{isAdmin ? 'Privilege' : 'Access Role'}</span>
               <span
                 className={`px-1.5 py-0.5 rounded font-mono uppercase font-semibold ${
                   isAdmin
-                    ? 'bg-indigo-900/60 text-indigo-300 font-bold'
-                    : 'bg-zinc-800 text-emerald-400'
+                    ? 'bg-indigo-950/70 text-indigo-300 border border-indigo-900/50'
+                    : 'bg-white/[0.06] text-emerald-400 border border-white/[0.08]'
                 }`}
               >
                 {isAdmin ? 'SUPERUSER' : user.role}
@@ -199,13 +206,13 @@ export function SideMenu() {
           </div>
         )}
 
-        {/* NAVIGATION LIST (SCROLLABLE, REFINED SPACING & TYPOGRAPHY) */}
+        {/* NAVIGATION LIST (SCROLLABLE, REFINED AMOLED SPACING & TYPOGRAPHY) */}
         <nav className="flex-1 px-2.5 py-1.5 space-y-0.5 overflow-y-auto">
           {/* A. PUBLIC NAVIGATION (Unauthenticated Guests) */}
           {!isAuthenticated && (
             <>
               <div className="px-2.5 pt-2 pb-1">
-                <p className="text-[11px] font-sans font-medium uppercase tracking-wider text-zinc-400">
+                <p className="text-[11px] font-sans font-medium uppercase tracking-wider text-zinc-500">
                   Navigation
                 </p>
               </div>
@@ -219,8 +226,8 @@ export function SideMenu() {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans transition-colors ${
                       isActive
-                        ? 'bg-zinc-800/90 text-white font-medium border border-zinc-700/60'
-                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+                        ? 'bg-white/[0.08] text-white font-medium border border-white/[0.1]'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-emerald-400' : 'text-zinc-400'}`} />
@@ -230,11 +237,11 @@ export function SideMenu() {
               })}
 
               {/* Guest Authentication Actions */}
-              <div className="pt-3 mt-3 border-t border-zinc-800/80 px-1 space-y-1.5">
+              <div className="pt-3 mt-3 border-t border-white/[0.06] px-1 space-y-1.5">
                 <Link
                   href="/login"
                   onClick={() => setIsOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-medium font-sans rounded-lg bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-medium font-sans rounded-lg bg-[#080808] hover:bg-[#121212] border border-white/[0.08] text-zinc-200 transition-colors"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Sign In</span>
@@ -243,7 +250,7 @@ export function SideMenu() {
                 <Link
                   href="/signup"
                   onClick={() => setIsOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-semibold font-sans rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 transition-colors shadow-sm"
+                  className="w-full flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-semibold font-sans rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-colors shadow-sm"
                 >
                   <span>Sign Up</span>
                 </Link>
@@ -255,7 +262,7 @@ export function SideMenu() {
           {isAuthenticated && !isAdmin && (
             <>
               <div className="px-2.5 pt-2 pb-1">
-                <p className="text-[11px] font-sans font-medium uppercase tracking-wider text-zinc-400">
+                <p className="text-[11px] font-sans font-medium uppercase tracking-wider text-zinc-500">
                   Developer Dashboard
                 </p>
               </div>
@@ -269,8 +276,8 @@ export function SideMenu() {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans transition-colors ${
                       isActive
-                        ? 'bg-zinc-800/90 text-white font-medium border border-zinc-700/60'
-                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+                        ? 'bg-white/[0.08] text-white font-medium border border-white/[0.1]'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-emerald-400' : 'text-zinc-400'}`} />
@@ -279,20 +286,20 @@ export function SideMenu() {
                 );
               })}
 
-              <div className="pt-2.5 mt-2.5 border-t border-zinc-800/80 space-y-0.5">
+              <div className="pt-2.5 mt-2.5 border-t border-white/[0.06] space-y-0.5">
                 <Link
                   href="/docs"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors"
                 >
                   <BookOpen className="w-4 h-4 text-zinc-400 shrink-0" />
                   <span>Documentation</span>
-                  <ExternalLink className="w-3 h-3 ml-auto text-zinc-400" />
+                  <ExternalLink className="w-3 h-3 ml-auto text-zinc-500" />
                 </Link>
                 <Link
                   href="/status"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors"
                 >
                   <Activity className="w-4 h-4 text-zinc-400 shrink-0" />
                   <span>Platform Status</span>
@@ -305,7 +312,7 @@ export function SideMenu() {
           {isAuthenticated && isAdmin && (
             <>
               <div className="px-2.5 pt-2 pb-1">
-                <p className="text-[11px] font-sans font-medium uppercase tracking-wider text-indigo-400">
+                <p className="text-[11px] font-sans font-medium uppercase tracking-wider text-indigo-400/80">
                   Administrative Control
                 </p>
               </div>
@@ -319,8 +326,8 @@ export function SideMenu() {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans transition-colors ${
                       isActive
-                        ? 'bg-indigo-950/80 text-white font-medium border border-indigo-800/60 shadow-sm'
-                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+                        ? 'bg-indigo-950/40 text-white font-medium border border-indigo-800/40 shadow-sm'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-indigo-400' : 'text-zinc-400'}`} />
@@ -329,20 +336,20 @@ export function SideMenu() {
                 );
               })}
 
-              <div className="pt-2.5 mt-2.5 border-t border-zinc-800/80 space-y-0.5">
+              <div className="pt-2.5 mt-2.5 border-t border-white/[0.06] space-y-0.5">
                 <Link
                   href="/docs"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors"
                 >
                   <BookOpen className="w-4 h-4 text-zinc-400 shrink-0" />
                   <span>Documentation</span>
-                  <ExternalLink className="w-3 h-3 ml-auto text-zinc-400" />
+                  <ExternalLink className="w-3 h-3 ml-auto text-zinc-500" />
                 </Link>
                 <Link
                   href="/status"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors"
                 >
                   <Activity className="w-4 h-4 text-zinc-400 shrink-0" />
                   <span>Platform Status</span>
@@ -352,13 +359,13 @@ export function SideMenu() {
           )}
         </nav>
 
-        {/* BOTTOM ACTIONS / STATUS */}
-        <div className="p-2.5 border-t border-zinc-800/90 space-y-1.5 shrink-0 bg-[#0a0c12]">
+        {/* BOTTOM ACTIONS / STATUS (AMOLED BLACK) */}
+        <div className="p-2.5 border-t border-white/[0.06] space-y-1.5 shrink-0 bg-[#000000]">
           {isAuthenticated && (
             <button
               type="button"
               onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-rose-400 hover:bg-rose-950/30 transition-colors cursor-pointer"
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium font-sans text-zinc-400 hover:text-rose-400 hover:bg-rose-950/20 transition-colors cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sign Out</span>
@@ -366,10 +373,10 @@ export function SideMenu() {
           )}
 
           {/* Operational Status indicator */}
-          <div className="px-2.5 py-1 flex items-center justify-between text-[11px] font-sans text-zinc-400">
+          <div className="px-2.5 py-1 flex items-center justify-between text-[11px] font-sans text-zinc-500">
             <span className="flex items-center gap-1.5">
               <span
-                className={`w-2 h-2 rounded-full ${
+                className={`w-1.5 h-1.5 rounded-full ${
                   systemHealthy === null
                     ? 'bg-zinc-500 animate-pulse'
                     : systemHealthy
@@ -385,7 +392,7 @@ export function SideMenu() {
                   : 'Degraded'}
               </span>
             </span>
-            <span className="text-zinc-400 font-mono text-[10px]">v1.0</span>
+            <span className="text-zinc-600 font-mono text-[10px]">v1.0</span>
           </div>
         </div>
       </div>

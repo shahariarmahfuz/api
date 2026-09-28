@@ -116,9 +116,9 @@ export default function DashboardSettingsPage() {
       </div>
 
       {/* Account Status Card */}
-      <div className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] flex flex-wrap items-center justify-between gap-4">
+      <div className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center font-bold text-sm text-emerald-400">
+          <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center font-bold text-sm text-emerald-400">
             {profile?.name?.charAt(0).toUpperCase() || 'U'}
           </div>
           <div>
@@ -147,8 +147,8 @@ export default function DashboardSettingsPage() {
       </div>
 
       {/* Profile Details Form */}
-      <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-4">
-        <div className="flex items-center gap-2 pb-3 border-b border-zinc-800/80">
+      <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] space-y-4">
+        <div className="flex items-center gap-2 pb-3 border-b border-white/[0.06]">
           <User className="w-4 h-4 text-emerald-400" />
           <h2 className="text-sm font-semibold text-white">Personal Information</h2>
         </div>
@@ -176,7 +176,7 @@ export default function DashboardSettingsPage() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
               />
             </div>
             <div>
@@ -186,7 +186,7 @@ export default function DashboardSettingsPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
               />
             </div>
           </div>
@@ -209,8 +209,8 @@ export default function DashboardSettingsPage() {
       </div>
 
       {/* Change Password Form */}
-      <div className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-4">
-        <div className="flex items-center gap-2 pb-3 border-b border-zinc-800/80">
+      <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] space-y-4">
+        <div className="flex items-center gap-2 pb-3 border-b border-white/[0.06]">
           <Lock className="w-4 h-4 text-emerald-400" />
           <h2 className="text-sm font-semibold text-white">Change Password</h2>
         </div>
@@ -240,7 +240,7 @@ export default function DashboardSettingsPage() {
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+              className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
             />
           </div>
 
@@ -256,7 +256,7 @@ export default function DashboardSettingsPage() {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="At least 8 characters"
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
               />
             </div>
             <div>
@@ -270,7 +270,7 @@ export default function DashboardSettingsPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter new password"
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
               />
             </div>
           </div>

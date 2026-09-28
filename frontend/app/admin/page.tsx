@@ -52,7 +52,7 @@ export default function AdminOverviewPage() {
         <button
           onClick={loadOverview}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-mono text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-[#080808] text-xs font-mono text-zinc-300 hover:text-white hover:bg-[#121212] transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh Telemetry</span>
@@ -72,7 +72,7 @@ export default function AdminOverviewPage() {
           {/* Top Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Total Users */}
-            <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+            <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">Total Users</span>
                 <Users className="w-4 h-4 text-indigo-400" />
@@ -86,7 +86,7 @@ export default function AdminOverviewPage() {
             </div>
 
             {/* Total Platform APIs */}
-            <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+            <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">Registered APIs</span>
                 <Layers className="w-4 h-4 text-emerald-400" />
@@ -100,7 +100,7 @@ export default function AdminOverviewPage() {
             </div>
 
             {/* Platform Requests */}
-            <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+            <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">Total API Requests</span>
                 <TrendingUp className="w-4 h-4 text-cyan-400" />
@@ -114,7 +114,7 @@ export default function AdminOverviewPage() {
             </div>
 
             {/* Active API Keys */}
-            <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+            <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-zinc-400">Active API Keys</span>
                 <Key className="w-4 h-4 text-amber-400" />
@@ -129,9 +129,9 @@ export default function AdminOverviewPage() {
           </div>
 
           {/* Database Health Card */}
-          <div className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] flex flex-wrap items-center justify-between gap-4">
+          <div className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400">
+              <div className="w-10 h-10 rounded-lg bg-[#080808] border border-white/[0.08] flex items-center justify-center text-emerald-400">
                 <Database className="w-5 h-5" />
               </div>
               <div>
@@ -160,7 +160,7 @@ export default function AdminOverviewPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
               href="/admin/users"
-              className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-all group"
+              className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
             >
               <div className="flex items-center justify-between mb-2">
                 <Users className="w-4 h-4 text-indigo-400" />
@@ -174,7 +174,7 @@ export default function AdminOverviewPage() {
 
             <Link
               href="/admin/apis"
-              className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-all group"
+              className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
             >
               <div className="flex items-center justify-between mb-2">
                 <Layers className="w-4 h-4 text-emerald-400" />
@@ -188,7 +188,7 @@ export default function AdminOverviewPage() {
 
             <Link
               href="/admin/requests"
-              className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 transition-all group"
+              className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
             >
               <div className="flex items-center justify-between mb-2">
                 <ListOrdered className="w-4 h-4 text-cyan-400" />
@@ -202,8 +202,8 @@ export default function AdminOverviewPage() {
           </div>
 
           {/* Recent Activity Table */}
-          <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
-            <div className="p-4 border-b border-zinc-800 bg-zinc-900/40 flex items-center justify-between">
+          <div className="rounded-xl border border-white/[0.08] bg-[#050505] overflow-hidden">
+            <div className="p-4 border-b border-white/[0.06] bg-[#080808] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-emerald-400" />
                 <h3 className="text-sm font-semibold text-white">Recent Platform Traffic</h3>
@@ -225,7 +225,7 @@ export default function AdminOverviewPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-mono">
                   <thead>
-                    <tr className="border-b border-zinc-800 bg-zinc-900/20 text-zinc-400">
+                    <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                       <th className="py-2.5 px-4">Method</th>
                       <th className="py-2.5 px-4">Endpoint</th>
                       <th className="py-2.5 px-4">Status</th>
@@ -234,9 +234,9 @@ export default function AdminOverviewPage() {
                       <th className="py-2.5 px-4 text-right">Timestamp</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
+                  <tbody className="divide-y divide-white/[0.06]">
                     {data.recent_activity.map((act: any) => (
-                      <tr key={act.id} className="hover:bg-zinc-900/30 transition-colors">
+                      <tr key={act.id} className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-2.5 px-4">
                           <MethodBadge method={act.method} />
                         </td>

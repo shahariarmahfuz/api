@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090a0f;
+  --background: #000000;
   --foreground: #f3f4f6;
-  --card-bg: #11131a;
-  --card-border: #1e2230;
-  --card-hover: #171a24;
+  --card-bg: #050505;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-hover: #080808;
 }
 
 body {
-  background-color: var(--background);
+  background-color: #000000;
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Geist Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
@@ -19,20 +19,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar for code blocks & tables */
+/* Custom Scrollbar for code blocks & tables in AMOLED black */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d0f15;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #252a3b;
+  background: #1a1a1a;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #394057;
+  background: #2a2a2a;
 }
 
 pre, code {

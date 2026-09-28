@@ -28,7 +28,7 @@ export default function UserDashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#090a0f] flex flex-col items-center justify-center gap-3">
+      <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-emerald-400" />
         <p className="text-xs font-mono text-zinc-500">Loading user dashboard...</p>
       </div>
@@ -41,7 +41,7 @@ export default function UserDashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#090a0f] text-zinc-100 flex flex-col">
+    <div className="min-h-screen bg-[#000000] text-zinc-100 flex flex-col">
       {/* Full screen main content - NO persistent sidebar */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
         {children}

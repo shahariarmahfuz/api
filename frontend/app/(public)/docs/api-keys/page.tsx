@@ -16,7 +16,7 @@ export default function ApiKeysDocsPage() {
 
       <section className="space-y-4">
         <h2 className="text-lg font-bold text-white">Cryptographic Storage</h2>
-        <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-3 text-xs text-zinc-300">
+        <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505] space-y-3 text-xs text-zinc-300">
           <p>
             When a key is generated in Orvia:
           </p>
@@ -32,14 +32,14 @@ export default function ApiKeysDocsPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-bold text-white">Best Practices</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+          <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
             <Lock className="w-5 h-5 text-emerald-400 mb-2" />
             <h3 className="text-sm font-semibold text-white">Environment Variables</h3>
             <p className="text-xs text-zinc-400 mt-1">
               Store API keys strictly in environment variables on your server. Never check them into version control.
             </p>
           </div>
-          <div className="p-4 rounded-xl border border-zinc-800 bg-[#0e1017]">
+          <div className="p-4 rounded-xl border border-white/[0.08] bg-[#050505]">
             <AlertTriangle className="w-5 h-5 text-amber-400 mb-2" />
             <h3 className="text-sm font-semibold text-white">Instant Revocation</h3>
             <p className="text-xs text-zinc-400 mt-1">

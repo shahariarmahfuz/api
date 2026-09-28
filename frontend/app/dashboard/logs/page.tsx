@@ -52,7 +52,7 @@ export default function DashboardLogsPage() {
         <button
           onClick={loadLogs}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-mono text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-[#080808] text-xs font-mono text-zinc-300 hover:text-white hover:bg-[#121212] transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
@@ -60,7 +60,7 @@ export default function DashboardLogsPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-wrap items-center gap-3 p-3 rounded-xl border border-zinc-800 bg-[#0e1017]">
+      <div className="flex flex-wrap items-center gap-3 p-3 rounded-xl border border-white/[0.08] bg-[#050505]">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
@@ -68,7 +68,7 @@ export default function DashboardLogsPage() {
             value={endpointFilter}
             onChange={(e) => setEndpointFilter(e.target.value)}
             placeholder="Filter by endpoint path..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#080808] border border-white/[0.08] rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
           />
         </div>
 
@@ -76,7 +76,7 @@ export default function DashboardLogsPage() {
         <select
           value={statusCodeFilter}
           onChange={(e) => setStatusCodeFilter(e.target.value)}
-          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 focus:outline-none focus:border-zinc-700"
+          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-300 focus:outline-none focus:border-zinc-700"
         >
           <option value="all">All Status Codes</option>
           <option value="200">200 OK</option>
@@ -90,7 +90,7 @@ export default function DashboardLogsPage() {
         <select
           value={methodFilter}
           onChange={(e) => setMethodFilter(e.target.value)}
-          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 focus:outline-none focus:border-zinc-700"
+          className="px-3 py-1.5 text-xs font-mono rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-300 focus:outline-none focus:border-zinc-700"
         >
           <option value="all">All Methods</option>
           <option value="GET">GET</option>
@@ -106,7 +106,7 @@ export default function DashboardLogsPage() {
           Loading audit logs...
         </div>
       ) : logs.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-zinc-800 rounded-xl bg-[#0e1017]/40">
+        <div className="text-center py-16 border border-dashed border-white/[0.08] rounded-xl bg-[#050505]/40">
           <ListOrdered className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
           <h3 className="text-base font-semibold text-zinc-300">No Request Logs</h3>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
@@ -116,11 +116,11 @@ export default function DashboardLogsPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+        <div className="rounded-xl border border-white/[0.08] bg-[#050505] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400">
+                <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                   <th className="py-3 px-4">Request ID</th>
                   <th className="py-3 px-4">Method</th>
                   <th className="py-3 px-4">Endpoint</th>
@@ -130,9 +130,9 @@ export default function DashboardLogsPage() {
                   <th className="py-3 px-4 text-right">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-white/[0.06]">
                 {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-zinc-900/30 transition-colors">
+                  <tr key={log.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-3 px-4 text-zinc-400 font-mono text-[11px]">
                       {log.request_id.slice(0, 16)}...
                     </td>

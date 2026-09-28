@@ -73,7 +73,7 @@ export default function LoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-[#0e1017] shadow-xl">
+        <div className="p-6 rounded-2xl border border-white/[0.08] bg-[#050505] shadow-2xl">
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-rose-950/40 border border-rose-800/50 flex items-start gap-2 text-xs text-rose-300">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -92,7 +92,7 @@ export default function LoginPage() {
                 placeholder="developer@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 
@@ -114,7 +114,7 @@ export default function LoginPage() {
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                className="w-full px-3 py-2 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 

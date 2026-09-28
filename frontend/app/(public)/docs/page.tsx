@@ -19,9 +19,9 @@ export default function DocsIndexPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Link
           href="/docs/getting-started"
-          className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 hover:bg-[#12141f] transition-all group"
+          className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
         >
-          <div className="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-emerald-400 mb-3">
+          <div className="w-8 h-8 rounded bg-[#080808] border border-white/[0.08] flex items-center justify-center text-emerald-400 mb-3">
             <Zap className="w-4 h-4" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-emerald-300">Quickstart Guide</h3>
@@ -32,9 +32,9 @@ export default function DocsIndexPage() {
 
         <Link
           href="/docs/authentication"
-          className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 hover:bg-[#12141f] transition-all group"
+          className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
         >
-          <div className="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-indigo-400 mb-3">
+          <div className="w-8 h-8 rounded bg-[#080808] border border-white/[0.08] flex items-center justify-center text-indigo-400 mb-3">
             <Shield className="w-4 h-4" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-indigo-300">Authentication & Keys</h3>
@@ -45,10 +45,10 @@ export default function DocsIndexPage() {
 
         <Link
           href="/docs/architecture"
-          className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 hover:bg-[#12141f] transition-all group"
+          className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
         >
-          <div className="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-cyan-400 mb-3">
-            <Layers className="w-4 h-4" />
+          <div className="w-8 h-8 rounded bg-[#080808] border border-white/[0.08] flex items-center justify-center text-cyan-400 mb-3">
+            <Layers className="w-5 h-5" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-cyan-300">Modular Architecture</h3>
           <p className="text-xs text-zinc-400 mt-1">
@@ -58,9 +58,9 @@ export default function DocsIndexPage() {
 
         <Link
           href="/apis"
-          className="p-5 rounded-xl border border-zinc-800 bg-[#0e1017] hover:border-zinc-700 hover:bg-[#12141f] transition-all group"
+          className="p-5 rounded-xl border border-white/[0.08] bg-[#050505] hover:border-white/[0.16] hover:bg-[#080808] transition-all group"
         >
-          <div className="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-amber-400 mb-3">
+          <div className="w-8 h-8 rounded bg-[#080808] border border-white/[0.08] flex items-center justify-center text-amber-400 mb-3">
             <Key className="w-4 h-4" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-amber-300">API Catalog</h3>
@@ -71,7 +71,7 @@ export default function DocsIndexPage() {
       </div>
 
       {/* Core Principles */}
-      <section className="p-6 rounded-xl border border-zinc-800 bg-[#0e1017] space-y-4">
+      <section className="p-6 rounded-xl border border-white/[0.08] bg-[#050505] space-y-4">
         <h2 className="text-lg font-bold text-white">Platform Standards</h2>
         <ul className="space-y-3 text-xs text-zinc-300">
           <li className="flex items-start gap-2">

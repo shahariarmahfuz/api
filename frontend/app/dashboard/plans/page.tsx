@@ -159,7 +159,7 @@ export default function UserPlansPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-96 rounded-2xl border border-zinc-800 bg-[#0e1017] animate-pulse" />
+            <div key={i} className="h-96 rounded-2xl border border-white/[0.08] bg-[#050505] animate-pulse" />
           ))}
         </div>
       ) : (
@@ -173,10 +173,10 @@ export default function UserPlansPage() {
                 key={plan.id}
                 className={`relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 ${
                   isCurrent
-                    ? 'border-2 border-emerald-500/60 bg-gradient-to-b from-[#0f1516] to-[#0c0e14] shadow-lg shadow-emerald-950/30'
+                    ? 'border-2 border-emerald-500/60 bg-[#050505] shadow-lg shadow-emerald-950/30'
                     : isPopular
-                    ? 'border-2 border-indigo-500/40 bg-gradient-to-b from-[#12111d] to-[#0e1017] shadow-xl shadow-indigo-950/20'
-                    : 'border border-zinc-800 bg-[#0e1017] hover:border-zinc-700'
+                    ? 'border-2 border-indigo-500/40 bg-[#050505] shadow-xl shadow-indigo-950/20'
+                    : 'border border-white/[0.08] bg-[#050505] hover:border-white/[0.16]'
                 }`}
               >
                 {/* Popular / Active Badge */}
@@ -204,7 +204,7 @@ export default function UserPlansPage() {
                   </p>
 
                   {/* Price */}
-                  <div className="my-5 pb-5 border-b border-zinc-800 flex items-baseline gap-1">
+                  <div className="my-5 pb-5 border-b border-white/[0.06] flex items-baseline gap-1">
                     <span className="text-3xl font-black text-white font-mono tracking-tight">
                       ${plan.price}
                     </span>
@@ -215,19 +215,19 @@ export default function UserPlansPage() {
 
                   {/* Limits Telemetry */}
                   <div className="space-y-2.5 mb-6 text-xs font-mono">
-                    <div className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+                    <div className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-[#080808] border border-white/[0.08]">
                       <span className="text-zinc-400">Monthly Quota</span>
                       <span className="font-bold text-zinc-200">
                         {plan.monthly_request_limit.toLocaleString()} reqs
                       </span>
                     </div>
-                    <div className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+                    <div className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-[#080808] border border-white/[0.08]">
                       <span className="text-zinc-400">Rate Limit</span>
                       <span className="font-bold text-zinc-200">
                         {plan.rate_limit_per_minute} req/min
                       </span>
                     </div>
-                    <div className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+                    <div className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-[#080808] border border-white/[0.08]">
                       <span className="text-zinc-400">Endpoint Access</span>
                       <span className="font-bold text-indigo-400">
                         {plan.is_all_apis ? 'All Platform APIs' : `${plan.allowed_apis?.length || 0} APIs`}
@@ -250,7 +250,7 @@ export default function UserPlansPage() {
                 </div>
 
                 {/* Activation Button */}
-                <div className="pt-4 border-t border-zinc-800/80">
+                <div className="pt-4 border-t border-white/[0.06]">
                   {isCurrent ? (
                     <button
                       disabled
@@ -282,7 +282,7 @@ export default function UserPlansPage() {
       {/* PLAN ACTIVATION MODAL */}
       {selectedPlan && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-[#0e1017] p-6 shadow-2xl space-y-6">
+          <div className="w-full max-w-lg rounded-2xl border border-white/[0.08] bg-[#050505] p-6 shadow-2xl space-y-6">
             {/* Modal Header */}
             <div className="flex items-start justify-between">
               <div>
@@ -298,7 +298,7 @@ export default function UserPlansPage() {
               </div>
               <button
                 onClick={() => setSelectedPlan(null)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800"
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -319,7 +319,7 @@ export default function UserPlansPage() {
             )}
 
             {/* Activation Method Tabs */}
-            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-zinc-900 border border-zinc-800">
+            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[#080808] border border-white/[0.08]">
               <button
                 type="button"
                 onClick={() => {
@@ -328,7 +328,7 @@ export default function UserPlansPage() {
                 }}
                 className={`py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                   activationMethod === 'coupon'
-                    ? 'bg-zinc-800 text-white shadow-sm border border-zinc-700/60'
+                    ? 'bg-[#050505] text-white shadow-sm border border-white/[0.1]'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
@@ -343,7 +343,7 @@ export default function UserPlansPage() {
                 }}
                 className={`py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                   activationMethod === 'payment'
-                    ? 'bg-zinc-800 text-white shadow-sm border border-zinc-700/60'
+                    ? 'bg-[#050505] text-white shadow-sm border border-white/[0.1]'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
@@ -365,13 +365,13 @@ export default function UserPlansPage() {
                       placeholder="e.g. ORVIA100 or PRO50"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                      className="flex-1 px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-700 text-white font-mono text-xs uppercase placeholder:normal-case placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
+                      className="flex-1 px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-mono text-xs uppercase placeholder:normal-case placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
                     />
                     <button
                       type="button"
                       onClick={handleValidateCoupon}
                       disabled={validatingCoupon || !couponCode.trim()}
-                      className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white font-semibold text-xs transition-colors shrink-0"
+                      className="px-4 py-2 rounded-xl bg-[#080808] border border-white/[0.08] hover:bg-[#121212] disabled:opacity-50 text-white font-semibold text-xs transition-colors shrink-0"
                     >
                       {validatingCoupon ? 'Checking...' : 'Apply Coupon'}
                     </button>
@@ -392,7 +392,7 @@ export default function UserPlansPage() {
                       <span>Discount ({couponValidation.discount_type === 'PERCENTAGE' ? `${couponValidation.discount_value}%` : `$${couponValidation.discount_value}`})</span>
                       <span>-${couponValidation.discount_amount.toFixed(2)}</span>
                     </div>
-                    <div className="pt-2 border-t border-zinc-800 flex items-center justify-between font-bold text-white text-sm">
+                    <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between font-bold text-white text-sm">
                       <span>Final Payable</span>
                       <span className="text-emerald-400 font-mono">${couponValidation.final_price.toFixed(2)}</span>
                     </div>
@@ -426,7 +426,7 @@ export default function UserPlansPage() {
                 </div>
 
                 {/* Order Summary */}
-                <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/60 space-y-2 text-xs font-mono">
+                <div className="p-4 rounded-xl border border-white/[0.08] bg-[#080808] space-y-2 text-xs font-mono">
                   <div className="flex items-center justify-between text-zinc-400">
                     <span>Plan</span>
                     <span className="text-zinc-200 font-bold">{selectedPlan.name}</span>
@@ -439,7 +439,7 @@ export default function UserPlansPage() {
                     <span>Monthly Quota</span>
                     <span className="text-zinc-200">{selectedPlan.monthly_request_limit.toLocaleString()} reqs</span>
                   </div>
-                  <div className="pt-2 border-t border-zinc-800 flex items-center justify-between font-bold text-white text-sm">
+                  <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between font-bold text-white text-sm">
                     <span>Order Total</span>
                     <span className="font-mono text-emerald-400">${selectedPlan.price.toFixed(2)} USD</span>
                   </div>

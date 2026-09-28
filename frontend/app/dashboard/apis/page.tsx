@@ -81,7 +81,7 @@ export default function DashboardApisPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter APIs..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#080808] border border-white/[0.08] rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700"
           />
         </div>
       </div>
@@ -91,11 +91,11 @@ export default function DashboardApisPage() {
           Loading registered APIs...
         </div>
       ) : (
-        <div className="rounded-xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+        <div className="rounded-xl border border-white/[0.08] bg-[#050505] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400">
+                <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                   <th className="py-3 px-4">API Name</th>
                   <th className="py-3 px-4">Method & Endpoint</th>
                   <th className="py-3 px-4">Category</th>
@@ -104,9 +104,9 @@ export default function DashboardApisPage() {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-white/[0.06]">
                 {filtered.map((item) => (
-                  <tr key={item.id} className="hover:bg-zinc-900/30 transition-colors">
+                  <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-3 px-4 font-sans font-semibold text-zinc-200">
                       {item.name}
                     </td>
@@ -139,7 +139,7 @@ export default function DashboardApisPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => setInspectModalItem(item)}
-                          className="p-1.5 rounded hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
+                          className="p-1.5 rounded hover:bg-white/[0.06] text-zinc-400 hover:text-zinc-200 transition-colors"
                           title="View metadata JSON"
                         >
                           <Eye className="w-4 h-4" />
@@ -149,7 +149,7 @@ export default function DashboardApisPage() {
                           disabled={toggleLoading === item.slug}
                           className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors ${
                             item.status === 'active'
-                              ? 'bg-zinc-800 text-zinc-300 hover:bg-rose-950/60 hover:text-rose-400'
+                              ? 'bg-[#080808] border border-white/[0.08] text-zinc-300 hover:bg-rose-950/60 hover:text-rose-400'
                               : 'bg-emerald-950/60 text-emerald-400 hover:bg-emerald-900/80'
                           }`}
                         >
@@ -157,7 +157,7 @@ export default function DashboardApisPage() {
                         </button>
                         <Link
                           href={`/apis/${item.slug}`}
-                          className="p-1.5 rounded hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
+                          className="p-1.5 rounded hover:bg-white/[0.06] text-zinc-400 hover:text-zinc-200 transition-colors"
                           title="Open public page"
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -174,9 +174,9 @@ export default function DashboardApisPage() {
 
       {/* Metadata Inspector Modal */}
       {inspectModalItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="w-full max-w-2xl rounded-xl border border-zinc-800 bg-[#0e1017] shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-900/40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-2xl rounded-xl border border-white/[0.08] bg-[#050505] shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-white/[0.06] bg-[#080808]">
               <div className="flex items-center gap-2">
                 <Code2 className="w-4 h-4 text-emerald-400" />
                 <h3 className="text-sm font-bold text-white">
@@ -185,18 +185,18 @@ export default function DashboardApisPage() {
               </div>
               <button
                 onClick={() => setInspectModalItem(null)}
-                className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800"
+                className="p-1 rounded text-zinc-400 hover:text-white hover:bg-white/[0.06]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="p-4 max-h-[70vh] overflow-y-auto font-mono text-xs text-zinc-300 bg-[#07080d]">
+            <div className="p-4 max-h-[70vh] overflow-y-auto font-mono text-xs text-zinc-300 bg-[#080808]">
               <pre>{JSON.stringify(inspectModalItem, null, 2)}</pre>
             </div>
-            <div className="p-4 border-t border-zinc-800 flex justify-end">
+            <div className="p-4 border-t border-white/[0.06] flex justify-end">
               <button
                 onClick={() => setInspectModalItem(null)}
-                className="px-4 py-1.5 text-xs rounded-lg bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+                className="px-4 py-1.5 text-xs rounded-lg bg-[#080808] border border-white/[0.08] text-zinc-200 hover:bg-[#121212]"
               >
                 Close
               </button>

@@ -181,11 +181,11 @@ export default function AdminCouponsPage() {
       )}
 
       {/* Coupons Table */}
-      <div className="rounded-2xl border border-zinc-800 bg-[#0e1017] overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.08] bg-[#050505] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400">
+              <tr className="border-b border-white/[0.06] bg-[#080808] text-zinc-400">
                 <th className="py-3 px-4">Coupon Code</th>
                 <th className="py-3 px-4">Applicable Plan</th>
                 <th className="py-3 px-4">Discount</th>
@@ -195,7 +195,7 @@ export default function AdminCouponsPage() {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/60">
+            <tbody className="divide-y divide-white/[0.06]">
               {loading ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-zinc-500">
@@ -210,10 +210,10 @@ export default function AdminCouponsPage() {
                 </tr>
               ) : (
                 coupons.map((c) => (
-                  <tr key={c.id} className="hover:bg-zinc-900/40">
+                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 rounded bg-zinc-800 text-amber-400 font-bold border border-zinc-700">
+                        <span className="px-2 py-1 rounded bg-[#080808] text-amber-400 font-bold border border-white/[0.1]">
                           {c.code}
                         </span>
                       </div>
@@ -242,7 +242,7 @@ export default function AdminCouponsPage() {
                         className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                           c.is_active
                             ? 'bg-emerald-950/70 text-emerald-400 border border-emerald-500/30'
-                            : 'bg-zinc-800 text-zinc-500 border border-zinc-700'
+                            : 'bg-[#080808] text-zinc-500 border border-white/[0.08]'
                         }`}
                       >
                         {c.is_active ? 'ACTIVE' : 'INACTIVE'}
@@ -252,7 +252,7 @@ export default function AdminCouponsPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEditModal(c)}
-                          className="p-1.5 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white"
+                          className="p-1.5 rounded-lg border border-white/[0.08] hover:border-zinc-700 bg-[#080808] text-zinc-300 hover:text-white"
                           title="Edit Coupon"
                         >
                           <Edit className="w-3.5 h-3.5" />
@@ -281,7 +281,7 @@ export default function AdminCouponsPage() {
       {/* CREATE / EDIT MODAL */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-[#0e1017] p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg rounded-2xl border border-white/[0.08] bg-[#050505] p-6 shadow-2xl space-y-5">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white tracking-tight">
@@ -293,7 +293,7 @@ export default function AdminCouponsPage() {
               </div>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800"
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -308,7 +308,7 @@ export default function AdminCouponsPage() {
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   placeholder="e.g. LAUNCH50, WELCOME100"
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-mono uppercase focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-mono uppercase focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
@@ -319,7 +319,7 @@ export default function AdminCouponsPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="e.g. Special promotion for new developers"
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-sans focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white font-sans focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
@@ -329,7 +329,7 @@ export default function AdminCouponsPage() {
                   <select
                     value={discountType}
                     onChange={(e) => setDiscountType(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   >
                     <option value="PERCENTAGE">Percentage (%)</option>
                     <option value="FIXED">Fixed Amount ($)</option>
@@ -344,7 +344,7 @@ export default function AdminCouponsPage() {
                     required
                     value={discountValue}
                     onChange={(e) => setDiscountValue(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -354,7 +354,7 @@ export default function AdminCouponsPage() {
                 <select
                   value={applicablePlanId}
                   onChange={(e) => setApplicablePlanId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                 >
                   <option value="">All Eligible Plans (Universal)</option>
                   {plans.map((p) => (
@@ -374,7 +374,7 @@ export default function AdminCouponsPage() {
                     value={maxUses}
                     onChange={(e) => setMaxUses(e.target.value)}
                     placeholder="Unlimited if blank"
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <div>
@@ -383,16 +383,16 @@ export default function AdminCouponsPage() {
                     type="date"
                     value={validUntil}
                     onChange={(e) => setValidUntil(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#080808] border border-white/[0.08] text-white focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white"
+                  className="px-4 py-2 rounded-xl border border-white/[0.08] bg-[#080808] text-zinc-300 hover:text-white"
                 >
                   Cancel
                 </button>
