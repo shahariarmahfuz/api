@@ -25,13 +25,39 @@ def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta]
         expire = datetime.now(timezone.utc) + expires_delta
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc)})
+    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc), "type": "access"})
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
 def decode_access_token(token: str) -> Dict[str, Any]:
     """Decode and validate a JWT access token."""
     return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+
+
+def create_password_reset_token(email: str, expires_minutes: int = 30) -> str:
+    """Create a signed password reset JWT token valid for 30 minutes."""
+    expire = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes)
+    payload = {
+        "sub": email.lower().strip(),
+        "type": "password_reset",
+        "exp": expire,
+        "iat": datetime.now(timezone.utc),
+    }
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def decode_password_reset_token(token: str) -> str:
+    """Decode and validate password reset token, returning the subject email."""
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != "password_reset":
+            raise ValueError("Invalid token type.")
+        email = payload.get("sub")
+        if not email:
+            raise ValueError("Token missing email.")
+        return email
+    except Exception as e:
+        raise ValueError(f"Invalid or expired reset token: {str(e)}")
 
 
 def generate_api_key(prefix: str = settings.API_KEY_PREFIX) -> Tuple[str, str, str]:

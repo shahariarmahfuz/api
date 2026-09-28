@@ -3,6 +3,8 @@ from fastapi import APIRouter
 from app.core.config import settings
 from app.core.database import check_database_health
 from app.api.v1.routes.auth import router as auth_router
+from app.api.v1.routes.user import router as user_router
+from app.api.v1.routes.admin import router as admin_router
 from app.api.v1.routes.registry import router as registry_router
 from app.api.v1.routes.api_keys import router as api_keys_router
 from app.api.v1.routes.logs import router as logs_router
@@ -34,6 +36,8 @@ async def health_check():
 # V1 API Router aggregation
 v1_router = APIRouter(prefix=settings.API_V1_PREFIX)
 v1_router.include_router(auth_router)
+v1_router.include_router(user_router)
+v1_router.include_router(admin_router)
 v1_router.include_router(registry_router)
 v1_router.include_router(api_keys_router)
 v1_router.include_router(logs_router)

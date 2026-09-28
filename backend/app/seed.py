@@ -226,13 +226,16 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
             name="Orvia Administrator",
             email=admin_email,
             hashed_password=hash_password("OrviaAdmin2026!"),
-            role="admin",
+            role="ADMIN",
             status="active",
         )
         db.add(admin_user)
         await db.flush()
         stats["users_created"] += 1
         logger.info(f"Seeded admin user: {admin_email}")
+    else:
+        admin_user.role = "ADMIN"
+        await db.flush()
 
     # 2. Seed Default Demo API Key
     # Key: orv_live_demo_key_for_testing_2026_orvia
