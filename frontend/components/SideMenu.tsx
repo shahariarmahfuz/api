@@ -33,7 +33,7 @@ export function SideMenu() {
     setIsOpen(false);
   }, [pathname]);
 
-  // Handle ESC key to close drawer
+  // Handle ESC key to close drawer and lock body scroll when open
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -52,7 +52,7 @@ export function SideMenu() {
     };
   }, [isOpen]);
 
-  // Check backend health
+  // Check backend health for status indicator
   useEffect(() => {
     let mounted = true;
     api
@@ -79,20 +79,42 @@ export function SideMenu() {
 
   return (
     <>
-      {/* 1. MINIMAL FLOATING MENU TRIGGER BUTTON (NO TOP BAR) */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        aria-label="Open Navigation Menu"
-        className="fixed top-4 left-4 z-40 flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-[#0c0e14]/90 hover:bg-[#151926] backdrop-blur-md border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white shadow-xl shadow-black/60 transition-all cursor-pointer group"
-      >
-        <Menu className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-        <span className="text-xs font-semibold font-mono tracking-wide text-zinc-200">
-          Menu
-        </span>
-      </button>
+      {/* 1. CLEAN, PREMIUM APPLICATION HEADER CONTAINER */}
+      <header className="sticky top-0 z-40 w-full border-b border-zinc-800/80 bg-[#090a0f]/95 backdrop-blur-md">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex items-center justify-between">
+          {/* LEFT: Significantly Larger Orvia Logo (Strict 3:1 Aspect Ratio) */}
+          <Link
+            href={brandHref}
+            className="flex items-center transition-opacity hover:opacity-90 shrink-0"
+            aria-label="Orvia Home"
+          >
+            <img
+              src="/orvia-logo.png"
+              alt="Orvia"
+              className="w-[170px] sm:w-[200px] md:w-[225px] h-auto aspect-[3/1] object-contain"
+            />
+          </Link>
 
-      {/* 2. OVERLAY BACKDROP */}
+          {/* RIGHT: Menu Button (Accessible, Touch-Friendly, Minimal) */}
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+            className="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white transition-all shadow-md shadow-black/40 cursor-pointer group active:scale-95 shrink-0"
+          >
+            {isOpen ? (
+              <X className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+            ) : (
+              <Menu className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+            )}
+            <span className="text-xs font-mono font-semibold tracking-wider uppercase text-zinc-300 group-hover:text-white">
+              {isOpen ? 'Close' : 'Menu'}
+            </span>
+          </button>
+        </div>
+      </header>
+
+      {/* 2. OVERLAY BACKDROP OVER REST OF PAGE */}
       {isOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity duration-200"
@@ -101,16 +123,16 @@ export function SideMenu() {
         />
       )}
 
-      {/* 3. SIDE MENU DRAWER */}
+      {/* 3. SIDE MENU DRAWER (ORIGINATES STRICTLY FROM THE LEFT) */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] h-full bg-[#0c0e14] border-r border-zinc-800/90 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-[85vw] sm:w-[390px] max-w-[420px] h-full bg-[#0c0e14] border-r border-zinc-800/90 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Side Navigation"
       >
-        {/* BRAND HEADER WITH EXACT 3:1 ORVIA LOGO */}
+        {/* DRAWER HEADER: [ ORVIA LOGO ] ... [ X ] */}
         <div className="p-5 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
           <Link
             href={brandHref}
@@ -120,7 +142,7 @@ export function SideMenu() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="h-8 w-auto aspect-[3/1] object-contain"
+              className="w-32 sm:w-36 h-auto aspect-[3/1] object-contain"
             />
           </Link>
 
@@ -128,7 +150,7 @@ export function SideMenu() {
             type="button"
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/80 transition-colors cursor-pointer"
+            className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/80 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -245,7 +267,7 @@ export function SideMenu() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors ${
                       isActive
                         ? 'bg-zinc-800 text-white font-semibold border border-zinc-700/60'
                         : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
@@ -295,7 +317,7 @@ export function SideMenu() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors ${
                       isActive
                         ? 'bg-indigo-950/80 text-white font-semibold border border-indigo-800/60 shadow-sm'
                         : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'

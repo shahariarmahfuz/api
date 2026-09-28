@@ -18,7 +18,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 pb-16">
       {/* Top Docs Navigation Pills (NO persistent sidebar) */}
       <div className="mb-8 pb-4 border-b border-zinc-800">
         <div className="flex flex-wrap items-center gap-2">

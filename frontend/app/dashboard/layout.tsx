@@ -42,8 +42,8 @@ export default function UserDashboardLayout({
 
   return (
     <div className="min-h-screen bg-[#090a0f] text-zinc-100 flex flex-col">
-      {/* Full screen main content - NO top bar, NO persistent sidebar */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-16 sm:pt-20 max-w-7xl w-full mx-auto">
+      {/* Full screen main content - NO persistent sidebar */}
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
         {children}
       </main>
     </div>
