@@ -61,7 +61,7 @@ export default function LoginPage() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="h-10 w-auto aspect-[3/1] object-contain mx-auto"
+              className="h-10 w-auto aspect-[1198/408] object-contain mx-auto"
             />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-white mt-4">

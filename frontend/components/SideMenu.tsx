@@ -91,7 +91,7 @@ export function SideMenu() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="w-[170px] sm:w-[200px] md:w-[225px] h-auto aspect-[3/1] object-contain"
+              className="w-[170px] sm:w-[200px] md:w-[225px] h-auto aspect-[1198/408] object-contain"
             />
           </Link>
 
@@ -142,7 +142,7 @@ export function SideMenu() {
             <img
               src="/orvia-logo.png"
               alt="Orvia"
-              className="w-32 sm:w-36 h-auto aspect-[3/1] object-contain"
+              className="w-32 sm:w-36 h-auto aspect-[1198/408] object-contain"
             />
           </Link>
 

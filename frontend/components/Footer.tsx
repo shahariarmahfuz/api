@@ -12,7 +12,7 @@ export function Footer() {
               <img
                 src="/orvia-logo.png"
                 alt="Orvia"
-                className="h-6 w-auto aspect-[3/1] object-contain"
+                className="h-6 w-auto aspect-[1198/408] object-contain"
               />
               <span className="text-xs text-zinc-500 font-mono">v1.0.0</span>
             </div>
