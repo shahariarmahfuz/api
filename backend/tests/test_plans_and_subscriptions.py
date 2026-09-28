@@ -72,10 +72,22 @@ async def test_plans_and_subscription_system(client):
     secret_key = key_res.json()["data"]["secret_key"]
 
     # 7. User tries to execute protected API -> 403 NO_ACTIVE_PLAN
+    import io
+    from PIL import Image
+    from unittest.mock import patch
+
+    def create_test_image_bytes():
+        buf = io.BytesIO()
+        img = Image.new("RGB", (60, 60), color="red")
+        img.save(buf, format="JPEG")
+        return buf.getvalue()
+
+    img_bytes = create_test_image_bytes()
+
     exec_no_plan = await client.post(
-        "/api/v1/test/execute/image-resize",
+        "/api/v1/image/upload",
         headers={"X-API-Key": secret_key},
-        json={"image_url": "https://example.com/test.png"},
+        files={"file": ("test.jpg", img_bytes, "image/jpeg")},
     )
     assert exec_no_plan.status_code == 403
     assert exec_no_plan.json()["error"]["code"] == "NO_ACTIVE_PLAN"
@@ -121,13 +133,25 @@ async def test_plans_and_subscription_system(client):
     assert sub_payload["usage"]["requests_limit"] == 100000
 
     # 12. User executes protected API -> now succeeds with 200!
-    exec_with_plan = await client.post(
-        "/api/v1/test/execute/image-resize",
-        headers={"X-API-Key": secret_key},
-        json={"image_url": "https://example.com/test.png"},
-    )
-    assert exec_with_plan.status_code == 200
-    assert exec_with_plan.json()["success"] is True
+    with patch("app.services.cloudinary_service.cloudinary.uploader.upload") as mock_upload:
+        mock_upload.return_value = {
+            "public_id": "test_public_123",
+            "url": "http://res.cloudinary.com/diwp8ug1r/image/upload/sample.jpg",
+            "secure_url": "https://res.cloudinary.com/diwp8ug1r/image/upload/sample.jpg",
+            "format": "jpg",
+            "width": 60,
+            "height": 60,
+            "bytes": len(img_bytes),
+            "created_at": "2026-09-28T09:00:00Z",
+        }
+        exec_with_plan = await client.post(
+            "/api/v1/image/upload",
+            headers={"X-API-Key": secret_key},
+            files={"file": ("test.jpg", img_bytes, "image/jpeg")},
+        )
+        assert exec_with_plan.status_code == 200
+        assert exec_with_plan.json()["success"] is True
+        assert exec_with_plan.json()["data"]["public_id"] == "test_public_123"
 
     # 13. Prevent duplicate coupon redemption
     dup_coupon = await client.post(

@@ -292,3 +292,41 @@ class AdminService:
                 total_pages=total_pages,
             ),
         )
+
+    # 5. Asset Administration
+    async def get_all_assets(
+        self,
+        user_id: Optional[str] = None,
+        page: int = 1,
+        page_size: int = 20,
+    ):
+        from app.models.uploaded_asset import UploadedAsset
+        from app.schemas.image_upload import UploadedAssetResponse
+
+        skip = (page - 1) * page_size
+        query = select(UploadedAsset)
+        count_stmt = select(func.count()).select_from(UploadedAsset)
+
+        if user_id:
+            query = query.where(UploadedAsset.user_id == user_id)
+            count_stmt = count_stmt.where(UploadedAsset.user_id == user_id)
+
+        total = (await self.db.execute(count_stmt)).scalar() or 0
+        items = (
+            await self.db.execute(
+                query.order_by(desc(UploadedAsset.created_at)).offset(skip).limit(page_size)
+            )
+        ).scalars().all()
+        total_pages = math.ceil(total / page_size) if total > 0 else 1
+        data = [UploadedAssetResponse.model_validate(a) for a in items]
+
+        return PaginatedResponse(
+            success=True,
+            data=data,
+            pagination=PaginationMeta(
+                total=total,
+                page=page,
+                page_size=page_size,
+                total_pages=total_pages,
+            ),
+        )

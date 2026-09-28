@@ -221,3 +221,39 @@ class UserService:
                 total_pages=total_pages,
             ),
         )
+
+    # 4. User Asset Management
+    async def get_user_assets(
+        self,
+        user_id: str,
+        page: int = 1,
+        page_size: int = 20,
+    ):
+        from app.models.uploaded_asset import UploadedAsset
+        from app.schemas.image_upload import UploadedAssetResponse
+
+        skip = (page - 1) * page_size
+        count_stmt = select(func.count()).select_from(UploadedAsset).where(UploadedAsset.user_id == user_id)
+        total = (await self.db.execute(count_stmt)).scalar() or 0
+
+        stmt = (
+            select(UploadedAsset)
+            .where(UploadedAsset.user_id == user_id)
+            .order_by(desc(UploadedAsset.created_at))
+            .offset(skip)
+            .limit(page_size)
+        )
+        items = (await self.db.execute(stmt)).scalars().all()
+        total_pages = math.ceil(total / page_size) if total > 0 else 1
+        data = [UploadedAssetResponse.model_validate(a) for a in items]
+
+        return PaginatedResponse(
+            success=True,
+            data=data,
+            pagination=PaginationMeta(
+                total=total,
+                page=page,
+                page_size=page_size,
+                total_pages=total_pages,
+            ),
+        )

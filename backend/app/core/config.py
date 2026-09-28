@@ -1,5 +1,6 @@
 import os
-from typing import List, Union
+from typing import List, Union, Optional
+
 from urllib.parse import urlparse, urlunparse
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -28,8 +29,37 @@ class Settings(BaseSettings):
     # API Key Configuration
     API_KEY_PREFIX: str = "orv_live_"
 
+    # Cloudinary Integration
+    CLOUDINARY_URL: Optional[str] = None
+    CLOUDINARY_CLOUD_NAME: Optional[str] = None
+    CLOUDINARY_API_KEY: Optional[str] = None
+    CLOUDINARY_API_SECRET: Optional[str] = None
+    CLOUDINARY_UPLOAD_FOLDER: str = "orvia"
+    MAX_IMAGE_UPLOAD_SIZE_MB: int = 10
+
+    @property
+    def cloudinary_credentials(self) -> dict:
+        """Resolve Cloudinary configuration from individual vars or CLOUDINARY_URL."""
+        c_name = self.CLOUDINARY_CLOUD_NAME
+        api_key = self.CLOUDINARY_API_KEY
+        api_secret = self.CLOUDINARY_API_SECRET
+
+        if self.CLOUDINARY_URL and (not c_name or not api_key or not api_secret):
+            parsed = urlparse(self.CLOUDINARY_URL)
+            api_key = parsed.username or api_key
+            api_secret = parsed.password or api_secret
+            c_name = parsed.hostname or c_name
+
+        return {
+            "cloud_name": c_name,
+            "api_key": api_key,
+            "api_secret": api_secret,
+            "secure": True,
+        }
+
     # CORS
     CORS_ORIGINS: Union[str, List[str]] = ["*"]
+
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod

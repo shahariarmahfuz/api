@@ -1,13 +1,13 @@
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func, delete
 
 from app.models.user import User
 from app.models.api_registry import ApiRegistry
 from app.models.api_key import ApiKey
 from app.models.api_request_log import ApiRequestLog
-from app.models.plan import Plan
+from app.models.plan import Plan, plan_api_access
 from app.models.coupon import Coupon
 from app.core.security import hash_password, hash_api_key
 from app.core.logging import logger
@@ -15,210 +15,61 @@ from app.core.logging import logger
 
 DEMO_APIS = [
     {
-        "name": "Image Resize",
-        "slug": "image-resize",
+        "name": "Cloudinary Image Upload",
+        "slug": "cloudinary-image-upload",
         "category": "image",
         "version": "v1",
         "method": "POST",
-        "endpoint": "/api/v1/image/resize",
+        "endpoint": "/api/v1/image/upload",
         "status": "active",
         "authentication_required": True,
         "rate_limit": "60/min",
-        "description": "High-performance smart image resizing with aspect ratio preservation, WebP/AVIF output, and quality tuning.",
+        "description": "Securely upload, optimize, and store images on Cloudinary with instant CDN distribution and binary format validation.",
         "documentation": {
-            "summary": "Resize images dynamically with automated quality optimization and crop modes.",
+            "summary": "Upload JPEG, PNG, WebP, or GIF image assets up to 10MB using multipart/form-data. Enforces binary payload validation and rate limits.",
             "parameters": [
-                {"name": "image_url", "type": "string (url)", "required": True, "description": "Public URL or base64 of the source image to resize.", "example": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675"},
-                {"name": "width", "type": "integer", "required": False, "description": "Target width in pixels (10 to 4096).", "example": 800},
-                {"name": "height", "type": "integer", "required": False, "description": "Target height in pixels (10 to 4096).", "example": 600},
-                {"name": "format", "type": "string", "required": False, "description": "Output format: webp, avif, jpeg, png.", "example": "webp"},
-                {"name": "quality", "type": "integer", "required": False, "description": "Compression quality from 1 to 100.", "example": 85}
+                {
+                    "name": "file",
+                    "type": "binary (multipart/form-data)",
+                    "required": True,
+                    "description": "The image file to upload. Supported formats: JPEG, PNG, WebP, GIF. Maximum file size: 10MB.",
+                    "example": "photo.jpg"
+                }
             ],
             "request_example": {
-                "image_url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675",
-                "width": 800,
-                "height": 600,
-                "format": "webp",
-                "quality": 85
+                "file": "(binary image data)"
             },
             "response_example": {
                 "success": True,
                 "data": {
-                    "output_url": "https://cdn.orvia.dev/renders/img_8923a1b0.webp",
-                    "original_size_bytes": 1420580,
-                    "optimized_size_bytes": 148200,
-                    "compression_ratio": "89.6%",
-                    "dimensions": {"width": 800, "height": 600}
-                }
+                    "public_id": "orvia_uploads/sample_upload_12345",
+                    "url": "http://res.cloudinary.com/diwp8ug1r/image/upload/v1727512800/orvia_uploads/sample_upload_12345.jpg",
+                    "secure_url": "https://res.cloudinary.com/diwp8ug1r/image/upload/v1727512800/orvia_uploads/sample_upload_12345.jpg",
+                    "format": "jpg",
+                    "width": 1200,
+                    "height": 800,
+                    "bytes": 245120,
+                    "created_at": "2026-09-28T09:00:00Z"
+                },
+                "message": "Image uploaded successfully"
             },
             "error_responses": [
-                {"code": "INVALID_IMAGE_URL", "status": 400, "message": "Source image URL could not be fetched."},
-                {"code": "RATE_LIMIT_EXCEEDED", "status": 429, "message": "Exceeded rate limit of 60 req/min."}
+                {"code": "MISSING_API_KEY", "status": 401, "message": "API key required in X-API-Key header."},
+                {"code": "INVALID_API_KEY", "status": 401, "message": "The provided API key is invalid or revoked."},
+                {"code": "SUBSCRIPTION_REQUIRED", "status": 403, "message": "Active subscription required to access this API."},
+                {"code": "API_NOT_IN_PLAN", "status": 403, "message": "Your current plan does not allow access to this API."},
+                {"code": "FILE_TOO_LARGE", "status": 413, "message": "Uploaded file exceeds maximum limit of 10MB."},
+                {"code": "UNSUPPORTED_IMAGE_FORMAT", "status": 415, "message": "File format not supported. Only JPEG, PNG, WebP, GIF are permitted."},
+                {"code": "UPLOAD_PROVIDER_ERROR", "status": 502, "message": "Cloudinary upload service failed to process the image."}
             ],
-            "tags": ["image", "media", "optimization", "resize"]
-        }
-    },
-    {
-        "name": "Video Metadata Extractor",
-        "slug": "video-metadata",
-        "category": "video",
-        "version": "v1",
-        "method": "POST",
-        "endpoint": "/api/v1/video/metadata",
-        "status": "active",
-        "authentication_required": True,
-        "rate_limit": "30/min",
-        "description": "Inspect and extract stream metadata, audio/video codecs, bitrate, duration, FPS, and color space from media containers.",
-        "documentation": {
-            "summary": "Extract deep container and stream telemetry from video URLs without full media downloads.",
-            "parameters": [
-                {"name": "video_url", "type": "string (url)", "required": True, "description": "URL to MP4, MKV, MOV, or HLS stream.", "example": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}
-            ],
-            "request_example": {
-                "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-            },
-            "response_example": {
-                "success": True,
-                "data": {
-                    "duration_seconds": 596.5,
-                    "video_streams": [{"codec": "h264", "resolution": "1920x1080", "fps": 24.0, "bitrate_kbps": 2100}],
-                    "audio_streams": [{"codec": "aac", "channels": 2, "sample_rate": 48000}]
-                }
-            },
-            "tags": ["video", "metadata", "streaming", "media"]
-        }
-    },
-    {
-        "name": "QR Code Generator",
-        "slug": "qr-generator",
-        "category": "utility",
-        "version": "v1",
-        "method": "POST",
-        "endpoint": "/api/v1/utility/qr",
-        "status": "active",
-        "authentication_required": False,
-        "rate_limit": "120/min",
-        "description": "Generate dynamic, styled 2D QR codes with customized colors, error correction levels, and vector SVG or raster PNG formats.",
-        "documentation": {
-            "summary": "Create SVG and PNG QR codes with customizable payloads and visual themes.",
-            "parameters": [
-                {"name": "content", "type": "string", "required": True, "description": "Text, URL, or WiFi credentials payload.", "example": "https://orvia.dev"},
-                {"name": "size", "type": "integer", "required": False, "description": "Pixel width/height.", "example": 512},
-                {"name": "format", "type": "string", "required": False, "description": "svg or png.", "example": "svg"}
-            ],
-            "request_example": {
-                "content": "https://orvia.dev",
-                "size": 512,
-                "format": "svg"
-            },
-            "response_example": {
-                "success": True,
-                "data": {
-                    "data_url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmci...",
-                    "content_length": 1824
-                }
-            },
-            "tags": ["utility", "qr", "generator", "svg"]
-        }
-    },
-    {
-        "name": "UUID / Cryptographic ID Generator",
-        "slug": "uuid-generator",
-        "category": "utility",
-        "version": "v1",
-        "method": "GET",
-        "endpoint": "/api/v1/utility/uuid",
-        "status": "active",
-        "authentication_required": False,
-        "rate_limit": "300/min",
-        "description": "Batch generate UUIDv4, UUIDv7 (time-ordered), NanoID, or ULID identifiers with cryptographic entropy.",
-        "documentation": {
-            "summary": "Cryptographically secure ID generator with time-sortable and compact ID variations.",
-            "parameters": [
-                {"name": "type", "type": "string", "required": False, "description": "v4, v7, nanoid, ulid.", "example": "v7"},
-                {"name": "count", "type": "integer", "required": False, "description": "Number of IDs to generate (1 to 100).", "example": 5}
-            ],
-            "request_example": {},
-            "response_example": {
-                "success": True,
-                "data": {
-                    "ids": [
-                        "018f92b1-7a8e-73b2-9a01-49b0e9b9d311",
-                        "018f92b1-7a8e-73b2-9a02-89c1f0e8e422"
-                    ],
-                    "type": "v7",
-                    "count": 2
-                }
-            },
-            "tags": ["utility", "uuid", "nanoid", "ulid", "ids"]
-        }
-    },
-    {
-        "name": "Text Sentiment & Entity Analysis",
-        "slug": "text-sentiment",
-        "category": "ai",
-        "version": "v1",
-        "method": "POST",
-        "endpoint": "/api/v1/ai/sentiment",
-        "status": "beta",
-        "authentication_required": True,
-        "rate_limit": "60/min",
-        "description": "High-throughput natural language analyzer for multi-language sentiment scoring, emotional polarity, and named entity recognition.",
-        "documentation": {
-            "summary": "Analyze sentiment, tone polarity, and extract entities from textual content.",
-            "parameters": [
-                {"name": "text", "type": "string", "required": True, "description": "The input text to analyze.", "example": "Orvia makes managing and discovering APIs an absolute joy to use!"}
-            ],
-            "request_example": {
-                "text": "Orvia makes managing and discovering APIs an absolute joy to use!"
-            },
-            "response_example": {
-                "success": True,
-                "data": {
-                    "sentiment": "positive",
-                    "score": 0.94,
-                    "entities": [{"text": "Orvia", "label": "PRODUCT"}]
-                }
-            },
-            "tags": ["ai", "nlp", "sentiment", "text"]
-        }
-    },
-    {
-        "name": "IP Geo & ASN Intelligence",
-        "slug": "ip-lookup",
-        "category": "data",
-        "version": "v1",
-        "method": "GET",
-        "endpoint": "/api/v1/data/ip-lookup",
-        "status": "active",
-        "authentication_required": True,
-        "rate_limit": "100/min",
-        "description": "Sub-millisecond IP geolocation, autonomous system number (ASN) lookup, carrier detection, and threat reputation scoring.",
-        "documentation": {
-            "summary": "Instant IP intelligence with low latency lookup for geolocation, datacenter detection, and ASN info.",
-            "parameters": [
-                {"name": "ip", "type": "string", "required": False, "description": "Target IPv4/IPv6 address. Defaults to caller IP.", "example": "8.8.8.8"}
-            ],
-            "request_example": {},
-            "response_example": {
-                "success": True,
-                "data": {
-                    "ip": "8.8.8.8",
-                    "country": "United States",
-                    "country_code": "US",
-                    "city": "Mountain View",
-                    "asn": "AS15169 GOOGLE",
-                    "is_datacenter": True
-                }
-            },
-            "tags": ["data", "ip", "asn", "geolocation"]
+            "tags": ["image", "upload", "cloudinary", "cdn", "media"]
         }
     }
 ]
 
 
 async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
-    """Seed initial administrator, test API keys, and demo API registry entries."""
+    """Seed initial administrator, test API keys, and Cloudinary Image Upload API registry entry."""
     stats = {"users_created": 0, "apis_created": 0, "keys_created": 0}
 
     # 1. Admin User
@@ -242,7 +93,6 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
         await db.flush()
 
     # 2. Seed Default Demo API Key
-    # Key: orv_live_demo_key_for_testing_2026_orvia
     demo_key_secret = "orv_live_demo_platform_key_2026_modular"
     demo_key_hash = hash_api_key(demo_key_secret)
     res = await db.execute(select(ApiKey).where(ApiKey.key_hash == demo_key_hash))
@@ -262,7 +112,19 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
         stats["keys_created"] += 1
         logger.info("Seeded demo API key.")
 
-    # 3. Seed Demo APIs in Registry
+    # 3. Purge legacy demo APIs from DB
+    current_slugs = [a["slug"] for a in DEMO_APIS]
+    legacy_apis_res = await db.execute(select(ApiRegistry).where(~ApiRegistry.slug.in_(current_slugs)))
+    legacy_apis = list(legacy_apis_res.scalars().all())
+    for legacy_api in legacy_apis:
+        logger.info(f"Purging legacy/demo API: {legacy_api.slug}")
+        # Delete associations in plan_api_access
+        await db.execute(delete(plan_api_access).where(plan_api_access.c.api_id == legacy_api.id))
+        await db.delete(legacy_api)
+    await db.flush()
+
+    # 4. Seed Cloudinary Image Upload API in Registry
+    cloudinary_api_model = None
     for api_data in DEMO_APIS:
         res = await db.execute(select(ApiRegistry).where(ApiRegistry.slug == api_data["slug"]))
         existing = res.scalars().first()
@@ -281,67 +143,40 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
                 documentation=api_data["documentation"],
             )
             db.add(new_api)
+            await db.flush()
             stats["apis_created"] += 1
+            cloudinary_api_model = new_api
             logger.info(f"Seeded registry entry: {api_data['slug']}")
+        else:
+            existing.name = api_data["name"]
+            existing.description = api_data["description"]
+            existing.category = api_data["category"]
+            existing.endpoint = api_data["endpoint"]
+            existing.method = api_data["method"]
+            existing.status = api_data["status"]
+            existing.rate_limit = api_data["rate_limit"]
+            existing.documentation = api_data["documentation"]
+            await db.flush()
+            cloudinary_api_model = existing
 
-    # 4. Seed initial sample logs for dashboard visualization
-    res = await db.execute(select(ApiRequestLog).limit(1))
-    if not res.scalars().first():
-        sample_logs = [
-            ApiRequestLog(
-                request_id="req_98f12a34-1100-4b2a",
-                endpoint="/api/v1/image/resize",
-                method="POST",
-                status_code=200,
-                response_time_ms=42.5,
-                ip_address="127.0.0.1",
-                api_key_id=demo_key.id,
-                user_id=admin_user.id,
-                timestamp=datetime.now(timezone.utc) - timedelta(minutes=15),
-            ),
-            ApiRequestLog(
-                request_id="req_87c21e54-2200-4c3b",
-                endpoint="/api/v1/utility/uuid",
-                method="GET",
-                status_code=200,
-                response_time_ms=8.2,
-                ip_address="127.0.0.1",
-                timestamp=datetime.now(timezone.utc) - timedelta(minutes=10),
-            ),
-            ApiRequestLog(
-                request_id="req_76b32d65-3300-4d4c",
-                endpoint="/api/v1/video/metadata",
-                method="POST",
-                status_code=200,
-                response_time_ms=95.1,
-                ip_address="192.168.1.10",
-                api_key_id=demo_key.id,
-                timestamp=datetime.now(timezone.utc) - timedelta(minutes=5),
-            ),
-            ApiRequestLog(
-                request_id="req_65a43c76-4400-4e5d",
-                endpoint="/api/v1/ai/sentiment",
-                method="POST",
-                status_code=401,
-                response_time_ms=12.0,
-                ip_address="10.0.0.4",
-                timestamp=datetime.now(timezone.utc) - timedelta(minutes=2),
-            ),
-        ]
-        db.add_all(sample_logs)
+    # 5. Clean up old request logs referencing deleted endpoints
+    await db.execute(
+        delete(ApiRequestLog).where(
+            ~ApiRequestLog.endpoint.in_(["/api/v1/image/upload", "/health"])
+        )
+    )
 
-    # 5. Seed Initial Plans
-    plan_count_res = await db.execute(select(func.count(Plan.id)) if "func" in locals() else select(Plan).limit(1))
-    existing_plan = plan_count_res.scalars().first()
-    if not existing_plan:
-        # Fetch APIs for basic plan
-        qr_api_res = await db.execute(select(ApiRegistry).where(ApiRegistry.slug.in_(["qr-generator", "uuid-generator", "image-resize"])))
-        basic_apis = list(qr_api_res.scalars().all())
+    # 6. Seed Plans or update existing plans
+    plans_res = await db.execute(select(Plan))
+    existing_plans = {p.slug: p for p in plans_res.scalars().all()}
 
+    allowed_list = [cloudinary_api_model] if cloudinary_api_model else []
+
+    if "basic" not in existing_plans:
         basic_plan = Plan(
             name="Basic",
             slug="basic",
-            description="Essential utilities and lightweight media processing for developers building prototypes.",
+            description="Essential cloud image uploads for developers building prototypes.",
             price=9.0,
             currency="USD",
             billing_interval="monthly",
@@ -350,21 +185,33 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
             rate_limit_per_minute=30,
             max_concurrent_requests=5,
             is_all_apis=False,
-            allowed_apis=basic_apis,
+            allowed_apis=allowed_list,
             features=[
-                "25,000 monthly requests",
+                "25,000 monthly image uploads",
                 "30 requests/minute",
-                "QR & UUID generators",
-                "Standard image resizing",
+                "Cloudinary Image Upload API",
+                "Max 10MB per image",
                 "Community support",
             ],
             status="ACTIVE",
         )
+        db.add(basic_plan)
+    else:
+        p = existing_plans["basic"]
+        p.allowed_apis = allowed_list
+        p.features = [
+            "25,000 monthly image uploads",
+            "30 requests/minute",
+            "Cloudinary Image Upload API",
+            "Max 10MB per image",
+            "Community support",
+        ]
 
+    if "pro" not in existing_plans:
         pro_plan = Plan(
             name="Pro",
             slug="pro",
-            description="High-throughput access to all media, AI, and intelligence endpoints for scaling production applications.",
+            description="High-throughput image processing and instant CDN distribution for scaling production applications.",
             price=29.0,
             currency="USD",
             billing_interval="monthly",
@@ -373,17 +220,29 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
             rate_limit_per_minute=60,
             max_concurrent_requests=15,
             is_all_apis=True,
+            allowed_apis=allowed_list,
             features=[
-                "100,000 monthly requests",
+                "100,000 monthly image uploads",
                 "60 requests/minute",
-                "All current & upcoming APIs",
-                "AI Sentiment analysis",
-                "Sub-millisecond IP lookup",
-                "Priority routing",
+                "Cloudinary Image Upload API",
+                "Instant CDN asset delivery",
+                "Priority upload pipeline",
             ],
             status="ACTIVE",
         )
+        db.add(pro_plan)
+    else:
+        p = existing_plans["pro"]
+        p.allowed_apis = allowed_list
+        p.features = [
+            "100,000 monthly image uploads",
+            "60 requests/minute",
+            "Cloudinary Image Upload API",
+            "Instant CDN asset delivery",
+            "Priority upload pipeline",
+        ]
 
+    if "enterprise" not in existing_plans:
         enterprise_plan = Plan(
             name="Enterprise",
             slug="enterprise",
@@ -396,28 +255,39 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
             rate_limit_per_minute=300,
             max_concurrent_requests=50,
             is_all_apis=True,
+            allowed_apis=allowed_list,
             features=[
-                "1,000,000 monthly requests",
+                "1,000,000 monthly image uploads",
                 "300 requests/minute",
-                "All platform APIs",
-                "Unlimited concurrency",
-                "Dedicated account support",
+                "Cloudinary Image Upload API",
+                "Dedicated asset storage",
                 "99.99% uptime SLA",
             ],
             status="ACTIVE",
         )
+        db.add(enterprise_plan)
+    else:
+        p = existing_plans["enterprise"]
+        p.allowed_apis = allowed_list
+        p.features = [
+            "1,000,000 monthly image uploads",
+            "300 requests/minute",
+            "Cloudinary Image Upload API",
+            "Dedicated asset storage",
+            "99.99% uptime SLA",
+        ]
 
-        db.add_all([basic_plan, pro_plan, enterprise_plan])
-        await db.flush()
-        logger.info("Seeded initial plans: Basic, Pro, Enterprise.")
+    await db.flush()
 
-        # 6. Seed Initial Coupons
+    # 7. Seed Initial Coupons if not present
+    coupon_res = await db.execute(select(Coupon).limit(1))
+    if not coupon_res.scalars().first():
         c1 = Coupon(
             code="ORVIA100",
             description="Launch celebration 100% discount on any plan",
             discount_type="PERCENTAGE",
             discount_value=100.0,
-            applicable_plan_id=None,  # Applies to all plans
+            applicable_plan_id=None,
             max_uses=1000,
             is_active=True,
         )
@@ -427,7 +297,7 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
             description="50% off first month for Pro plan developers",
             discount_type="PERCENTAGE",
             discount_value=50.0,
-            applicable_plan_id=pro_plan.id,
+            applicable_plan_id=None,
             max_uses=500,
             is_active=True,
         )
@@ -437,4 +307,3 @@ async def seed_initial_data(db: AsyncSession) -> Dict[str, Any]:
 
     await db.commit()
     return stats
-

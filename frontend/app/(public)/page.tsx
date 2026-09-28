@@ -40,10 +40,9 @@ export default function HomePage() {
     });
   }, []);
 
-  const curlDemo = `curl -X POST "http://localhost:8000/api/v1/test/execute/image-resize" \\
+  const curlDemo = `curl -X POST "http://localhost:8000/api/v1/image/upload" \\
   -H "X-API-Key: orv_live_demo_platform_key_2026_modular" \\
-  -H "Content-Type: application/json" \\
-  -d '{"image_url": "https://example.com/photo.jpg", "width": 800}'`;
+  -F "file=@image.jpg"`;
 
   return (
     <div className="relative overflow-hidden">

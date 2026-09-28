@@ -141,3 +141,19 @@ async def get_my_request_logs(
         page=page,
         page_size=page_size,
     )
+
+
+@router.get("/assets")
+async def get_my_uploaded_assets(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user: User = Depends(require_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Retrieve uploaded assets belonging strictly to the authenticated user."""
+    service = UserService(db)
+    return await service.get_user_assets(
+        user_id=current_user.id,
+        page=page,
+        page_size=page_size,
+    )

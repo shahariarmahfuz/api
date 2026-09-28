@@ -7,7 +7,13 @@ from app.schemas.api_key import ApiKeyCreate, ApiKeyResponse, ApiKeyCreatedRespo
 from app.schemas.common import PaginatedResponse, PaginationMeta
 from app.models.api_key import ApiKey
 from app.core.security import generate_api_key, hash_api_key
-from app.core.errors import AuthenticationError, NotFoundError, PermissionDeniedError
+from app.core.errors import (
+    AuthenticationError,
+    NotFoundError,
+    PermissionDeniedError,
+    MissingApiKeyError,
+    InvalidApiKeyError,
+)
 
 
 class ApiKeyService:
@@ -48,16 +54,17 @@ class ApiKeyService:
 
     async def verify_key(self, raw_key: str) -> ApiKey:
         if not raw_key or not raw_key.strip():
-            raise AuthenticationError("API key is required.")
+            raise MissingApiKeyError("API key is required.")
 
         key_hash = hash_api_key(raw_key.strip())
         api_key = await self.repo.get_by_hash(key_hash)
 
         if not api_key:
-            raise AuthenticationError("Invalid API key.")
+            raise InvalidApiKeyError("The provided API key is invalid.")
 
         if api_key.status != "active":
-            raise AuthenticationError(f"API key is {api_key.status}.")
+            raise InvalidApiKeyError("The provided API key is inactive or revoked.")
+
 
         if api_key.expires_at and api_key.expires_at < datetime.now(timezone.utc):
             api_key.status = "expired"

@@ -85,21 +85,38 @@ export default function ApiDetailPage() {
   // Generate code snippets
   const baseUrl = 'http://localhost:8000';
   const fullUrl = `${baseUrl}${apiData.endpoint}`;
+  const isMultipart = apiData.endpoint.includes('/image/upload');
 
-  const curlCode =
-    apiData.method.toUpperCase() === 'GET'
+  const curlCode = isMultipart
+    ? `curl -X POST "${fullUrl}" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -F "file=@photo.jpg"`
+    : apiData.method.toUpperCase() === 'GET'
       ? `curl -X GET "${fullUrl}" \\
-  -H "X-API-Key: orv_live_your_secret_key"`
+  -H "X-API-Key: YOUR_API_KEY"`
       : `curl -X ${apiData.method.toUpperCase()} "${fullUrl}" \\
-  -H "X-API-Key: orv_live_your_secret_key" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '${JSON.stringify(reqExample)}'`;
 
-  const pythonCode = `import requests
+  const pythonCode = isMultipart
+    ? `import requests
 
 url = "${fullUrl}"
 headers = {
-    "X-API-Key": "orv_live_your_secret_key",
+    "X-API-Key": "YOUR_API_KEY"
+}
+with open("photo.jpg", "rb") as f:
+    files = {"file": f}
+    response = requests.post(url, headers=headers, files=files)
+
+print(response.status_code)
+print(response.json())`
+    : `import requests
+
+url = "${fullUrl}"
+headers = {
+    "X-API-Key": "YOUR_API_KEY",
     "Content-Type": "application/json"
 }
 ${
@@ -112,10 +129,24 @@ response = requests.post(url, json=payload, headers=headers)`
 print(response.status_code)
 print(response.json())`;
 
-  const jsCode = `const response = await fetch("${fullUrl}", {
+  const jsCode = isMultipart
+    ? `const formData = new FormData();
+formData.append("file", fileInput.files[0]);
+
+const response = await fetch("${fullUrl}", {
+  method: "POST",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY",
+  },
+  body: formData,
+});
+
+const data = await response.json();
+console.log(data);`
+    : `const response = await fetch("${fullUrl}", {
   method: "${apiData.method.toUpperCase()}",
   headers: {
-    "X-API-Key": "orv_live_your_secret_key",
+    "X-API-Key": "YOUR_API_KEY",
     "Content-Type": "application/json",
   },
   ${apiData.method.toUpperCase() !== 'GET' ? `body: JSON.stringify(${JSON.stringify(reqExample, null, 2)})` : ''}

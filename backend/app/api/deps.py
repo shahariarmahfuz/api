@@ -4,7 +4,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.core.security import decode_access_token
-from app.core.errors import AuthenticationError, PermissionDeniedError
+from app.core.errors import AuthenticationError, PermissionDeniedError, MissingApiKeyError
+
 from app.models.user import User
 from app.models.api_key import ApiKey
 from app.services.auth_service import AuthService
@@ -86,9 +87,10 @@ async def verify_api_key(
         raw_key = authorization.replace("Bearer ", "").strip()
 
     if not raw_key:
-        raise AuthenticationError("Missing required API key. Provide via 'X-API-Key' header.")
+        raise MissingApiKeyError("API key is required.")
 
     api_key_service = ApiKeyService(db)
+
     api_key = await api_key_service.verify_key(raw_key)
 
     # Attach key ID and owner ID to request state for logging

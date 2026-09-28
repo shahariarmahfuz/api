@@ -3,21 +3,21 @@ import { CodeBlock } from '@/components/CodeBlock';
 
 export default function ArchitectureDocsPage() {
   const manifestExample = `from app.modules.manifest import ApiModuleManifest
-
-image_resize_manifest = ApiModuleManifest(
-    name="Image Resize",
-    slug="image-resize",
+ 
+cloudinary_upload_manifest = ApiModuleManifest(
+    name="Cloudinary Image Upload",
+    slug="cloudinary-image-upload",
     category="image",
     version="v1",
     method="POST",
-    endpoint="/api/v1/image/resize",
-    description="Dynamic image resizing with WebP/AVIF output.",
+    endpoint="/api/v1/image/upload",
+    description="Secure image upload with instant CDN hosting.",
     status="active",
     authentication_required=True,
     rate_limit="60/min",
     documentation={
         "parameters": [
-            {"name": "image_url", "type": "string", "required": True, "description": "Source image URL"}
+            {"name": "file", "type": "binary", "required": True, "description": "The image file (JPEG, PNG, WebP, GIF)"}
         ]
     }
 )`;

@@ -6,6 +6,7 @@ from app.models.api_request_log import ApiRequestLog
 from app.models.plan import Plan, plan_api_access
 from app.models.coupon import Coupon
 from app.models.subscription import Subscription, CouponUsage
+from app.models.uploaded_asset import UploadedAsset
 
 __all__ = [
     "Base",
@@ -20,5 +21,7 @@ __all__ = [
     "Coupon",
     "Subscription",
     "CouponUsage",
+    "UploadedAsset",
 ]
+
 

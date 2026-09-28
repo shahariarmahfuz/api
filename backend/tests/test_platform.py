@@ -17,18 +17,18 @@ async def test_api_catalog_list(client):
     assert response.status_code == 200
     payload = response.json()
     assert payload["success"] is True
-    assert len(payload["data"]) >= 5
+    assert len(payload["data"]) >= 1
     assert "pagination" in payload
 
 
 @pytest.mark.asyncio
 async def test_api_detail_and_not_found(client):
     # Existing slug
-    response = await client.get("/api/v1/apis/image-resize")
+    response = await client.get("/api/v1/apis/cloudinary-image-upload")
     assert response.status_code == 200
     payload = response.json()
     assert payload["success"] is True
-    assert payload["data"]["slug"] == "image-resize"
+    assert payload["data"]["slug"] == "cloudinary-image-upload"
     assert payload["data"]["category"] == "image"
 
     # Non-existing slug should return uniform JSON error
@@ -47,7 +47,7 @@ async def test_categories(client):
     payload = response.json()
     assert payload["success"] is True
     categories = [c["category"] for c in payload["data"]]
-    assert "image" in categories or "utility" in categories
+    assert "image" in categories
 
 
 @pytest.mark.asyncio
@@ -56,4 +56,4 @@ async def test_system_overview(client):
     assert response.status_code == 200
     payload = response.json()
     assert payload["success"] is True
-    assert payload["data"]["total_apis"] >= 5
+    assert payload["data"]["total_apis"] >= 1

@@ -104,13 +104,74 @@ class PlanLimitExceededError(OrviaException):
 
 
 class ApiNotInPlanError(OrviaException):
-    def __init__(self, message: str = "Your current plan does not grant access to this API. Please upgrade your plan.", details: Optional[Any] = None):
+    def __init__(self, message: str = "Your current plan does not include this API.", details: Optional[Any] = None):
         super().__init__(
             message=message,
-            code="API_NOT_IN_PLAN",
+            code="API_NOT_AVAILABLE",
             status_code=status.HTTP_403_FORBIDDEN,
             details=details,
         )
+
+
+class ApiNotAvailableError(OrviaException):
+    def __init__(self, message: str = "Your current plan does not include this API.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="API_NOT_AVAILABLE",
+            status_code=status.HTTP_403_FORBIDDEN,
+            details=details,
+        )
+
+
+class MissingApiKeyError(OrviaException):
+    def __init__(self, message: str = "API key is required.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="MISSING_API_KEY",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            details=details,
+        )
+
+
+class InvalidApiKeyError(OrviaException):
+    def __init__(self, message: str = "The provided API key is invalid.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="INVALID_API_KEY",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            details=details,
+        )
+
+
+class UnsupportedImageError(OrviaException):
+    def __init__(self, message: str = "The uploaded file format is not supported.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="UNSUPPORTED_IMAGE_FORMAT",
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            details=details,
+        )
+
+
+class FileTooLargeError(OrviaException):
+    def __init__(self, message: str = "The uploaded image exceeds the maximum allowed file size.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="FILE_TOO_LARGE",
+            status_code=status.HTTP_413_CONTENT_TOO_LARGE,
+            details=details,
+        )
+
+
+class UploadProviderError(OrviaException):
+    def __init__(self, message: str = "The image upload provider could not process the request.", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="UPLOAD_PROVIDER_ERROR",
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            details=details,
+        )
+
 
 
 

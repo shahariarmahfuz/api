@@ -371,7 +371,7 @@ export default function AdminApisPage() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. image-resize"
+                    placeholder="e.g. cloudinary-image-upload"
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     className="w-full px-3 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 focus:outline-none focus:border-zinc-700 font-mono"

@@ -11,6 +11,7 @@ import {
   Activity,
   CreditCard,
   Tag,
+  Image as ImageIcon,
   LucideIcon,
 } from 'lucide-react';
 
@@ -42,6 +43,7 @@ export const publicNavigation: NavItem[] = [
 export const userNavigation: NavItem[] = [
   { name: 'Overview', href: '/dashboard', icon: LayoutDashboard, exact: true },
   { name: 'APIs', href: '/dashboard/apis', icon: Layers },
+  { name: 'Uploaded Assets', href: '/dashboard/assets', icon: ImageIcon },
   { name: 'Plans', href: '/dashboard/plans', icon: CreditCard },
   { name: 'API Keys', href: '/dashboard/api-keys', icon: Key },
   { name: 'Usage', href: '/dashboard/usage', icon: BarChart3 },
@@ -59,6 +61,7 @@ export const adminNavigation: NavItem[] = [
   { name: 'Overview', href: '/admin', icon: LayoutDashboard, exact: true },
   { name: 'Users', href: '/admin/users', icon: Users },
   { name: 'APIs Registry', href: '/admin/apis', icon: Layers },
+  { name: 'Uploaded Assets', href: '/admin/assets', icon: ImageIcon },
   { name: 'Plans', href: '/admin/plans', icon: CreditCard },
   { name: 'Coupons', href: '/admin/coupons', icon: Tag },
   { name: 'API Keys', href: '/admin/api-keys', icon: Key },

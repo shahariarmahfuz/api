@@ -441,3 +441,21 @@ async def toggle_coupon_status(
         message=f"Coupon active status set to {body.is_active}.",
     )
 
+
+# 6. Uploaded Asset Administration
+@router.get("/assets")
+async def list_all_assets(
+    user_id: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Retrieve all uploaded assets platform-wide with pagination."""
+    service = AdminService(db)
+    return await service.get_all_assets(
+        user_id=user_id,
+        page=page,
+        page_size=page_size,
+    )
+
